@@ -1,0 +1,1125 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kasir Toko 123</title>
+<style id="pageStyle"></style>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#08080a;--s1:#101013;--s2:#17171b;--s3:#1f1f25;
+  --bd:#25252c;--bd2:#34343d;--tx:#f4f4f5;--mut:#9a9aa6;
+  --g:#10b981;--g2:#34d399;--g-d:#059669;
+  --g-l:rgba(16,185,129,.12);--g-m:rgba(16,185,129,.3);
+  --red:#f43f5e;--red-l:rgba(244,63,94,.12);
+  --warn:rgba(245,158,11,.12);--warn-t:#fbbf24;
+  --sh:0 1px 0 rgba(255,255,255,.04) inset,0 10px 30px rgba(0,0,0,.45);--r:16px
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--tx);font-size:15px;-webkit-font-smoothing:antialiased;
+  background:radial-gradient(900px 420px at 10% -8%,rgba(16,185,129,.15),transparent 60%),radial-gradient(700px 380px at 100% 0,rgba(99,102,241,.09),transparent 60%),var(--bg);background-attachment:fixed;min-height:100vh}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:#33333c;border-radius:8px}
+::-webkit-scrollbar-thumb:hover{background:#4a4a55}
+
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 24px}
+.brand{display:flex;align-items:center;gap:14px;min-width:0}
+.logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#6ee7b7,#10b981 55%,#047857);display:grid;place-items:center;box-shadow:0 0 0 1px rgba(255,255,255,.12) inset,0 8px 24px rgba(16,185,129,.35);flex:none}
+.logo svg{width:25px;height:25px;fill:none;stroke:#04140d;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+header h1{margin:0;font-size:21px;font-weight:800;letter-spacing:.4px}
+#hAddr{font-size:12.5px;color:var(--mut);margin-top:2px}
+.hr{display:flex;align-items:center;gap:10px;flex:none}
+.clock{text-align:right;line-height:1.25;flex:none;padding:8px 16px;border:1px solid var(--bd);border-radius:14px;background:rgba(255,255,255,.02)}
+.clock b{display:block;font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--g2)}
+.clock span{font-size:12px;color:var(--mut)}
+.pill{display:flex;align-items:center;gap:8px;border:1px solid var(--bd);background:rgba(255,255,255,.02);color:var(--mut);padding:9px 14px;border-radius:999px;font-size:12.5px;cursor:pointer;white-space:nowrap;transition:.15s}
+.pill:hover{border-color:var(--bd2);color:var(--tx)}
+.pill i{width:9px;height:9px;border-radius:50%;background:#6b6b78;flex:none}
+.pill.ok i{background:var(--g2);box-shadow:0 0 9px var(--g2)}
+.pill.sync i{background:#fbbf24;animation:bl 1s infinite}
+.pill.off i{background:var(--red);box-shadow:0 0 9px var(--red)}
+@keyframes bl{50%{opacity:.25}}
+@media(max-width:620px){.clock span{display:none}header{padding:12px 14px}.pill span{display:none}.pill{padding:12px}}
+
+nav{position:sticky;top:0;z-index:20;display:flex;gap:6px;padding:9px 20px;background:rgba(8,8,10,.8);backdrop-filter:blur(14px);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);overflow-x:auto}
+nav button{display:flex;align-items:center;gap:8px;border:1px solid transparent;background:none;padding:9px 15px;border-radius:999px;font-size:14.5px;font-weight:500;cursor:pointer;color:var(--mut);white-space:nowrap;transition:.15s}
+nav button svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+nav button:hover{background:var(--s3);color:var(--tx)}
+nav button.on{background:var(--g-l);color:var(--g2);font-weight:700;border-color:var(--g-m);box-shadow:0 0 18px rgba(16,185,129,.15)}
+
+main{padding:18px 24px 44px;max-width:1400px;margin:auto}
+@media(max-width:620px){main{padding:12px 12px 36px}}
+.tab{display:none}.tab.on{display:block}
+.card{background:linear-gradient(180deg,var(--s2),var(--s1));border:1px solid var(--bd);border-radius:var(--r);padding:18px;box-shadow:var(--sh)}
+.kasir{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;align-items:start}
+@media(max-width:900px){.kasir{grid-template-columns:1fr}}
+@media(min-width:901px){.kasir>.card:last-child{position:sticky;top:70px;max-height:calc(100vh - 90px);overflow:auto}}
+
+input,select,button{font:inherit}
+input,select{padding:10px 12px;border:1px solid var(--bd2);border-radius:11px;background:#0c0c0f;width:100%;color:var(--tx);transition:.15s}
+select option{background:#17171b;color:var(--tx)}
+input::placeholder{color:#6b6b78}
+input:focus,select:focus{outline:0;border-color:var(--g);box-shadow:0 0 0 4px rgba(16,185,129,.18)}
+#q{padding:14px 14px 14px 46px;font-size:16px;border-radius:14px;background-color:#0c0c0f;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2334d399' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:16px center}
+label{font-size:12.5px;color:var(--mut);display:block;margin-bottom:4px;font-weight:500}
+label.btn{display:inline-flex;align-items:center;font-size:14.5px;margin:0}
+
+.btn{background:linear-gradient(180deg,#34d399,#10b981);color:#03140c;border:0;padding:10px 18px;border-radius:11px;cursor:pointer;font-weight:700;box-shadow:0 4px 16px rgba(16,185,129,.28);transition:.15s}
+.btn:hover{filter:brightness(1.08);box-shadow:0 6px 22px rgba(16,185,129,.4)}
+.btn:active{transform:translateY(1px)}
+.btn.sec{background:var(--s3);color:var(--tx);border:1px solid var(--bd2);box-shadow:none;font-weight:500}
+.btn.sec:hover{background:#2a2a32;border-color:#4a4a55;filter:none}
+.btn.red{background:linear-gradient(180deg,#fb7185,#f43f5e);color:#fff;box-shadow:0 4px 16px rgba(244,63,94,.28)}
+.btn.sm{padding:6px 11px;font-size:13px;border-radius:9px}
+.btn:disabled,.btn:disabled:hover{background:#1c1c22;color:#5b5b66;box-shadow:none;cursor:not-allowed;transform:none;filter:none}
+
+.chips{display:flex;gap:6px;overflow-x:auto;padding:12px 2px 4px}
+.chip{flex:none;border:1px solid var(--bd2);background:var(--s3);color:var(--mut);padding:6px 14px;border-radius:999px;font-size:13px;cursor:pointer;transition:.15s}
+.chip:hover{color:var(--tx);border-color:#4a4a55}
+.chip.on{background:var(--g-l);color:var(--g2);border-color:var(--g-m);font-weight:600}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:10px;max-height:calc(100vh - 310px);min-height:200px;overflow:auto;padding:3px}
+.pc{--c:#94a3b8;position:relative;border:1px solid var(--bd);border-radius:14px;padding:12px 12px 12px 15px;cursor:pointer;background:linear-gradient(180deg,#1b1b21,#131317);text-align:left;transition:.15s;display:flex;flex-direction:column;gap:5px;color:var(--tx);overflow:hidden}
+.pc::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c);opacity:.85}
+.pc:hover{border-color:var(--c);box-shadow:0 10px 24px rgba(0,0,0,.5),0 0 0 1px var(--c);transform:translateY(-2px)}
+.pc .cat{font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--c);font-weight:700}
+.pc b{font-size:13.5px;line-height:1.3;font-weight:600}
+.pc .pr{color:var(--g2);font-weight:800;font-size:15.5px}
+.pc .st{font-size:12px;color:var(--mut)}
+.pc.low .st{color:var(--red);font-weight:600}
+.pc.out{opacity:.4}
+.more{grid-column:1/-1;text-align:center;color:var(--mut);font-size:12.5px;padding:6px}
+
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px 8px;border-bottom:1px solid var(--bd);text-align:left;vertical-align:middle}
+th{font-size:11.5px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:.5px;background:var(--s3)}
+th:first-child{border-radius:8px 0 0 8px}th:last-child{border-radius:0 8px 8px 0}
+tbody tr:hover td{background:rgba(255,255,255,.03)}
+.r{text-align:right}
+.sub{font-size:12.5px;color:var(--mut)}
+.cartScroll th{position:sticky;top:0;z-index:1}
+@media(min-width:901px){.cartScroll{max-height:calc(100vh - 600px);min-height:172px;overflow:auto}}
+@media(max-height:820px) and (min-width:901px){header{padding:8px 22px}.logo{width:38px;height:38px;border-radius:11px}.logo svg{width:21px;height:21px}header h1{font-size:18px}.clock{padding:4px 12px}.clock b{font-size:19px}main{padding-top:12px}.kasir .card{padding:14px}.tot{margin-top:8px;padding-top:8px}.big{font-size:26px}}
+.qty{display:flex;align-items:center;gap:4px}
+.qty button{width:30px;height:30px;border:1px solid var(--bd2);background:var(--s3);border-radius:8px;cursor:pointer;font-size:16px;color:var(--tx)}
+.qty button:hover{background:var(--g-l);border-color:var(--g)}
+.qty input{width:60px;text-align:center;padding:5px}
+.x{border:0;background:none;color:#5b5b66;cursor:pointer;font-size:16px;padding:4px 6px;border-radius:6px}
+.x:hover{color:var(--red);background:var(--red-l)}
+.empty{text-align:center;color:#6b6b78;padding:28px 6px}
+
+.tot{margin-top:12px;border-top:1px dashed var(--bd2);padding-top:12px}
+.tot div{display:flex;justify-content:space-between;align-items:center;padding:4px 0}
+.tot div:has(.big){background:linear-gradient(135deg,rgba(16,185,129,.18),rgba(16,185,129,.05));border:1px solid var(--g-m);border-radius:14px;padding:10px 14px;margin-top:6px}
+.big{font-size:30px;font-weight:800;color:var(--g2);letter-spacing:-.5px;text-shadow:0 0 22px rgba(52,211,153,.45)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row>*{flex:1;min-width:110px}
+.row>.fit{flex:none}
+.quick{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.quick button{flex:none;padding:6px 11px;font-size:13px}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;align-items:end}
+h3{margin:0 0 10px;font-size:16px;font-weight:700}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.pgrid .card p{margin:0 0 14px}
+.mt{margin-top:14px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:14px 0}
+.stat{background:linear-gradient(180deg,#1b1b21,#131317);border:1px solid var(--bd);border-radius:14px;padding:14px 14px 14px 20px;position:relative;overflow:hidden}
+.stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--g)}
+.stat:nth-child(2)::before{background:#3b82f6}
+.stat:nth-child(3)::before{background:#f59e0b}
+.stat:nth-child(4)::before{background:#8b5cf6}
+.stat span{font-size:12.5px;color:var(--mut)}
+.stat b{display:block;font-size:22px;margin-top:3px;font-weight:800}
+.tag{display:inline-block;background:var(--warn);color:var(--warn-t);border:1px solid rgba(245,158,11,.35);font-size:11.5px;padding:1px 8px;border-radius:999px;font-weight:600}
+.tag.v{background:var(--red-l);color:var(--red);border-color:rgba(244,63,94,.4)}
+.tag.c{background:rgba(255,255,255,.05);color:var(--mut);border-color:var(--bd2)}
+.note{background:var(--g-l);border:1px solid var(--g-m);color:#6ee7b7;border-radius:11px;padding:9px 13px;font-size:13px;margin-bottom:12px}
+.note.w{background:var(--warn);border-color:rgba(245,158,11,.35);color:var(--warn-t);cursor:pointer}
+.note.e{background:var(--red-l);border-color:rgba(244,63,94,.4);color:#fda4af;cursor:pointer}
+
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#f4f4f5;color:#0a0a0c;padding:11px 20px;border-radius:999px;display:none;z-index:99;box-shadow:0 10px 30px rgba(0,0,0,.6);font-size:14px;font-weight:600}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.68);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:50;padding:10px}
+#modal.on{display:flex}
+#modal .card{max-height:94vh;overflow:auto;border-radius:20px;box-shadow:0 24px 70px rgba(0,0,0,.7)}
+#modalBody .receipt{min-width:250px;padding:16px;background:#fff;border-radius:8px}
+.receipt{font-family:"Courier New",monospace;font-size:12.5px;color:#000;margin:0 auto;line-height:1.35}
+.receipt .c{text-align:center}
+.receipt hr{border:0;border-top:1px dashed #000;margin:6px 0}
+.receipt .rl{display:flex;justify-content:space-between;gap:6px}
+
+#printArea{display:none}
+#printArea .rep{font-family:Arial,Helvetica,sans-serif;font-size:11pt;color:#000;background:#fff}
+#printArea .rep h1{font-size:16pt;margin:0}
+#printArea .rep h2{font-size:12.5pt;margin:14px 0 4px}
+#printArea .rep .meta{font-size:10pt;color:#333;margin:2px 0}
+#printArea .rep table{border-collapse:collapse;width:100%;margin-top:6px}
+#printArea .rep th,#printArea .rep td{border:1px solid #888;padding:4px 6px;font-size:10pt;color:#000;text-transform:none;letter-spacing:0;border-radius:0}
+#printArea .rep th{background:#eee;font-weight:700}
+#printArea .rep tr{page-break-inside:avoid}
+#printArea .rep .sum td{border:0;padding:2px 10px 2px 0}
+@media print{
+  html,body{background:#fff!important;color:#000}
+  body>*:not(#printArea){display:none!important}
+  #printArea{display:block!important}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>
+    <div><h1 id="hName">TOKO 123</h1><div id="hAddr"></div></div>
+  </div>
+  <div class="hr">
+    <button class="pill sync" id="syncPill" onclick="syncAll(false)" title="Klik untuk sinkronkan sekarang"><i></i><span>Menghubungkan…</span></button>
+    <div class="clock"><b id="clkTime"></b><span id="clkDate"></span></div>
+  </div>
+</header>
+<nav>
+  <button class="on" data-t="kasir"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Kasir</button>
+  <button data-t="produk"><svg viewBox="0 0 24 24"><path d="M16.5 9.4 7.5 4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96 12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg>Produk &amp; Stok</button>
+  <button data-t="laporan"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Riwayat Transaksi</button>
+  <button data-t="cetak"><svg viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>Menu Print</button>
+  <button data-t="setting"><svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>Pengaturan &amp; Backup</button>
+</nav>
+<main>
+<div id="syncBar" class="note e" style="display:none" onclick="goTab('setting')"></div>
+<div id="bkBar" class="note w" style="display:none" onclick="goTab('setting')"></div>
+
+<section id="kasir" class="tab on">
+  <div class="kasir">
+    <div class="card">
+      <input id="q" placeholder="Cari nama / ketik atau scan kode barang, lalu Enter  (F2)" autocomplete="off">
+      <div class="chips" id="chips"></div>
+      <div class="grid" id="grid"></div>
+    </div>
+    <div class="card">
+      <h3>Keranjang</h3>
+      <div class="cartScroll"><table>
+        <thead><tr><th>Barang</th><th>Jumlah</th><th class="r">Subtotal</th><th></th></tr></thead>
+        <tbody id="cartBody"></tbody>
+      </table></div>
+      <div class="tot">
+        <div><span>Subtotal</span><span id="tSub">Rp 0</span></div>
+        <div><span>Diskon (Rp)</span><span style="width:140px"><input id="disc" type="number" min="0" placeholder="0" style="text-align:right;padding:5px 8px"></span></div>
+        <div><b>TOTAL</b><span class="big" id="tTot">Rp 0</span></div>
+      </div>
+      <div class="row mt">
+        <div><label>Metode bayar</label>
+          <select id="method"><option>Tunai</option><option>QRIS</option><option>Transfer</option></select></div>
+        <div id="paidWrap"><label>Uang diterima (F9)</label><input id="paid" type="number" min="0" placeholder="0"></div>
+      </div>
+      <div class="quick" id="quick"></div>
+      <div class="tot" style="margin-top:4px"><div><span>Kembalian</span><b id="tChg" style="font-size:20px">Rp 0</b></div></div>
+      <div class="row mt">
+        <button class="btn sec" onclick="clearCart()">Kosongkan</button>
+        <button class="btn" id="btnPay" onclick="pay()" style="flex:2;font-size:17px">BAYAR</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="produk" class="tab">
+  <div class="card">
+    <h3 id="pfTitle">Tambah Barang Baru</h3>
+    <div class="form">
+      <div><label>Kode / Barcode (boleh kosong)</label><input id="pCode"></div>
+      <div style="grid-column:span 2"><label>Nama barang *</label><input id="pName"></div>
+      <div><label>Kategori</label><input id="pCat" list="catList" placeholder="contoh: Minuman"><datalist id="catList"></datalist></div>
+      <div><label>Harga jual (Rp) *</label><input id="pPrice" type="number" min="0"></div>
+      <div><label>Satuan</label><input id="pUnit" placeholder="pcs, dus, bks..."></div>
+      <div><label>Lacak stok?</label><select id="pTrack"><option value="1">Ya</option><option value="0">Tidak</option></select></div>
+      <div><label>Stok</label><input id="pStock" type="number" step="any" min="0"></div>
+      <div class="row"><button class="btn" id="pSave" onclick="saveProduct()">Simpan Barang</button><button class="btn sec" onclick="resetForm()">Batal</button></div>
+    </div>
+    <div class="sub mt" id="pHint">Untuk mengubah nama atau harga, klik tombol "Edit" pada barang di tabel bawah. Perubahan nama/harga tidak mengubah transaksi lama; struk lama tetap memakai nama dan harga saat transaksi terjadi.</div>
+  </div>
+  <div class="card mt">
+    <div class="row"><input id="pSearch" placeholder="Cari produk..." style="flex:3"><select id="pCatSel" style="flex:1"></select><button class="btn sec fit" onclick="importCatalog(true)">Impor dari barang.sql</button></div>
+    <div id="pInfo" class="sub mt"></div>
+    <table class="mt">
+      <thead><tr><th>Kode</th><th>Nama</th><th>Kategori</th><th class="r">Harga</th><th class="r">Stok</th><th></th></tr></thead>
+      <tbody id="pBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="laporan" class="tab">
+  <div class="card">
+    <div class="note">Riwayat transaksi disimpan permanen di Supabase dan di komputer ini: tidak ada batas jumlah, tidak ada batas waktu, dan tidak dihapus otomatis. Hanya hilang jika Anda menghapusnya sendiri.</div>
+    <div class="row">
+      <div><label>Dari tanggal</label><input type="date" id="hFrom"></div>
+      <div><label>Sampai tanggal</label><input type="date" id="hTo"></div>
+      <div style="flex:2"><label>Cari no. struk / nama barang</label><input id="hSearch" placeholder="contoh: TK20261106 atau indomie"></div>
+    </div>
+    <div class="quick">
+      <button class="btn sec sm" onclick="setRange('h','today')">Hari ini</button>
+      <button class="btn sec sm" onclick="setRange('h','month')">Bulan ini</button>
+      <button class="btn sec sm" onclick="setRange('h','all')">Semua waktu</button>
+      <button class="btn sec sm" onclick="exportCSV()">Unduh CSV (Excel)</button>
+      <button class="btn sm" onclick="goTab('cetak')">Menu Print</button>
+    </div>
+    <div class="stats" id="stats"></div>
+    <h3>Barang terlaris</h3>
+    <div id="top" class="sub" style="margin-bottom:10px"></div>
+    <table>
+      <thead><tr><th>No. Struk</th><th>Waktu</th><th>Metode</th><th class="r">Total</th><th></th></tr></thead>
+      <tbody id="sBody"></tbody>
+    </table>
+    <div class="mt" style="text-align:center"><button class="btn sec" id="moreBtn" style="display:none" onclick="histLimit+=100;renderReport()">Tampilkan 100 lagi</button></div>
+  </div>
+</section>
+
+<section id="cetak" class="tab">
+  <div class="pgrid">
+    <div class="card">
+      <h3>Struk Belanja</h3>
+      <p class="sub">Cetak ulang struk transaksi terakhir, atau pilih transaksi tertentu dari Riwayat Transaksi (tombol Lihat/Cetak).</p>
+      <div class="row">
+        <button class="btn" onclick="printLast()">Cetak Struk Terakhir</button>
+        <button class="btn sec" onclick="goTab('laporan')">Pilih dari Riwayat</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Laporan Penjualan</h3>
+      <p class="sub">Daftar transaksi, rekap per metode bayar, dan rekap per barang untuk rentang tanggal yang dipilih. Ukuran kertas A4.</p>
+      <div class="row">
+        <div><label>Dari tanggal</label><input type="date" id="cFrom"></div>
+        <div><label>Sampai tanggal</label><input type="date" id="cTo"></div>
+      </div>
+      <div class="quick">
+        <button class="btn sec sm" onclick="setRange('c','today')">Hari ini</button>
+        <button class="btn sec sm" onclick="setRange('c','month')">Bulan ini</button>
+        <button class="btn sec sm" onclick="setRange('c','all')">Semua waktu</button>
+      </div>
+      <button class="btn" onclick="printReport()">Cetak Laporan Penjualan</button>
+    </div>
+    <div class="card">
+      <h3>Daftar Harga Barang</h3>
+      <p class="sub">Semua barang beserta kode dan harga jual, urut abjad.</p>
+      <button class="btn" onclick="printPrices()">Cetak Daftar Harga</button>
+    </div>
+    <div class="card">
+      <h3>Daftar Stok Barang</h3>
+      <p class="sub">Stok barang yang dilacak, atau hanya yang menipis/habis (untuk daftar belanja ke pasar).</p>
+      <div class="row">
+        <button class="btn" onclick="printStock(false)">Cetak Semua Stok</button>
+        <button class="btn sec" onclick="printStock(true)">Cetak Stok Menipis</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="setting" class="tab">
+  <div class="card">
+    <h3>Data Toko (tampil di struk)</h3>
+    <div class="form">
+      <div><label>Nama toko</label><input id="sName"></div>
+      <div style="grid-column:span 2"><label>Alamat</label><input id="sAddr"></div>
+      <div><label>Teks bawah struk</label><input id="sFoot"></div>
+      <div><label>Lebar kertas struk</label><select id="sWidth"><option value="58">58 mm</option><option value="80">80 mm</option></select></div>
+      <div><label>Batas stok menipis</label><input id="sLow" type="number" min="0"></div>
+      <div><label>Jual walau stok habis?</label><select id="sNeg"><option value="0">Tidak</option><option value="1">Ya</option></select></div>
+      <div><button class="btn" onclick="saveSettings()">Simpan Pengaturan</button></div>
+    </div>
+  </div>
+  <div class="card mt">
+    <h3>Sinkronisasi Supabase</h3>
+    <p class="sub">Barang, stok, transaksi, dan pengaturan otomatis disimpan ke database Supabase, dan salinannya ada di komputer ini sehingga kasir tetap jalan saat internet putus. Perubahan yang belum terkirim dikirim otomatis begitu online lagi.</p>
+    <p id="syncInfo" class="sub"></p>
+    <div class="row">
+      <button class="btn fit" onclick="syncAll(false)">Sinkronkan sekarang</button>
+      <button class="btn sec fit" onclick="syncAll(true)">Sinkron penuh (tarik semua riwayat)</button>
+    </div>
+  </div>
+  <div class="card mt">
+    <h3>Database Barang (barang.sql)</h3>
+    <p class="sub">Katalog harga dari database <b>barang</b> sudah tertanam di aplikasi ini: <span id="catInfo"></span>. Impor ulang akan memperbarui nama, kategori, dan harga barang yang kodenya sama. Stok dan barang lain tidak berubah.</p>
+    <div class="row"><button class="btn fit" onclick="importCatalog(true)">Impor / Perbarui Katalog</button></div>
+  </div>
+  <div class="card mt">
+    <h3>Backup &amp; Pulihkan Data</h3>
+    <p class="sub">Data utama ada di Supabase. File backup (.json) tetap berguna sebagai cadangan tambahan, simpan di flashdisk atau Google Drive. Memulihkan backup atau menghapus semua data juga mengganti data di server.</p>
+    <p id="dataInfo" class="sub"></p>
+    <div class="row">
+      <button class="btn fit" onclick="backup()">Unduh Backup (.json)</button>
+      <label class="btn sec fit" style="margin:0;cursor:pointer">Pulihkan dari Backup<input type="file" id="restoreFile" accept=".json" style="display:none"></label>
+      <button class="btn red fit" onclick="resetAll()">Hapus Semua Data</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<div id="modal"><div class="card">
+  <div id="modalBody"></div>
+  <div class="row mt">
+    <button class="btn" onclick="printReceiptNow()">Cetak Struk</button>
+    <button class="btn sec" onclick="closeModal()">Tutup</button>
+  </div>
+</div></div>
+<div id="toast"></div>
+<div id="printArea"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const rp = n => 'Rp ' + Math.round(n).toLocaleString('id-ID');
+const n0 = n => Math.round(n).toLocaleString('id-ID');
+const num = v => { const x = parseFloat(v); return isNaN(x) ? 0 : x; };
+const r3 = x => Math.round(x * 1000) / 1000;
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let uidN = 0;
+const uid = () => 'p' + Date.now().toString(36) + (++uidN).toString(36) + Math.random().toString(36).slice(2, 5);
+const pad = n => String(n).padStart(2, '0');
+const ymd = ts => { const d = new Date(ts); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+const fmtTime = ts => new Date(ts).toLocaleString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+const fmtDate = ts => new Date(ts).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
+
+/* ================= SUPABASE ================= */
+const SB_URL = 'https://unqyuveoxurbdzwtgqth.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVucXl1dmVveHVyYmR6d3RncXRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM5NjE5MDUsImV4cCI6MjEwOTUzNzkwNX0.8Wvk_hYicG7K-wWhIicLJb8H8XZ6FOon7mN85x1VCn0';
+const SYNC_ON = !!(SB_URL && SB_KEY);
+
+const CATALOG = [["MNM001-D","ALE ALE (SATUAN/GROSIR) (Dus isi 24)","Minuman",19000,"dus"],["MNM001-G","ALE ALE (SATUAN/GROSIR) (Dus grosir isi 24)","Minuman",18800,"dus"],["MNM002-S","AMH JAHE MERAH (Satuan)","Minuman",43000,"pcs"],["MNM002-D","AMH JAHE MERAH (Dus)","Minuman",170000,"dus"],["MNM003-D","AQUA BTL 1,5L (Dus isi 24)","Minuman",51500,"dus"],["MNM004-D","AQUA BTL 600ML (Dus isi 24)","Minuman",45000,"dus"],["MNM005-S","BONTEH TARIK (Satuan)","Minuman",18500,"pcs"],["MNM005-D","BONTEH TARIK (Dus)","Minuman",221000,"dus"],["MNM006-S","BONTEH MATCHA (Satuan)","Minuman",18500,"pcs"],["MNM006-D","BONTEH MATCHA (Dus)","Minuman",146000,"dus"],["MNM007-D","CINCAU (Dus isi 24)","Minuman",18000,"dus"],["MNM008-D","COCA PRODUCT SMALL 3.000 (Dus isi 12)","Minuman",33000,"dus"],["MNM009-D","COCA PRODUCT LARGE 4.000 (Dus isi 12)","Minuman",37500,"dus"],["MNM010-D","DEGAN (Dus isi 24)","Minuman",18000,"dus"],["MNM011-D","FLORIDINA (Dus isi 12)","Minuman",28500,"dus"],["MNM012-D","GOLDA (Dus isi 12)","Minuman",37000,"dus"],["MNM013-D","GULA ASEM (Dus)","Minuman",18000,"dus"],["MNM014-D","ISOPLUS (Dus isi 12)","Minuman",27000,"dus"],["MNM015-D","IWATER (Dus isi 24)","Minuman",15500,"dus"],["MNM016-D","KOPI NONGKRONG (Dus isi 24)","Minuman",18500,"dus"],["MNM017-S","LARUTAN BOTOL S (Satuan)","Minuman",37000,"pcs"],["MNM017-D","LARUTAN BOTOL S (Dus isi 48)","Minuman",145000,"dus"],["MNM018-S","LARUTAN BOTOL L (Satuan)","Minuman",6150,"pcs"],["MNM018-D","LARUTAN BOTOL L (Dus isi 24)","Minuman",147000,"dus"],["MNM019-S","LARUTAN KALENG L (Satuan)","Minuman",5350,"pcs"],["MNM019-D","LARUTAN KALENG L (Dus)","Minuman",126000,"dus"],["MNM020-S","LARUTAN KALENG S (Satuan)","Minuman",5250,"pcs"],["MNM020-D","LARUTAN KALENG S (Dus)","Minuman",124000,"dus"],["MNM021-D","MILKU COKLAT (Dus)","Minuman",36000,"dus"],["MNM022-D","MILKU MARI (Dus)","Minuman",36000,"dus"],["MNM023-D","MILKU TAWAR (Dus)","Minuman",36000,"dus"],["MNM024-D","OLALA ANGGUR (Dus isi 24)","Minuman",17800,"dus"],["MNM025-D","OLALA JAMBU (Dus isi 24)","Minuman",17800,"dus"],["MNM026-D","OLALA JERUK (Dus isi 24)","Minuman",17800,"dus"],["MNM027-S","POCARI BOTOL (Satuan)","Minuman",5350,"pcs"],["MNM027-D","POCARI BOTOL (Dus isi 24)","Minuman",127000,"dus"],["MNM028-S","POCARI KALENG (Satuan)","Minuman",5400,"pcs"],["MNM028-D","POCARI KALENG (Dus isi 24)","Minuman",128000,"dus"],["MNM029-D","POWER BLUE (Dus isi 24)","Minuman",17500,"dus"],["MNM030-D","POWER F (SATUAN / GROSIR) (Dus isi 24)","Minuman",18500,"dus"],["MNM030-G","POWER F (SATUAN / GROSIR) (Dus grosir isi 24)","Minuman",18300,"dus"],["MNM031-D","SUI (Dus isi 24)","Minuman",17500,"dus"],["MNM032-D","TEH GELAS (SATUAN / GROSIR) (Dus isi 24)","Minuman",18500,"dus"],["MNM032-G","TEH GELAS (SATUAN / GROSIR) (Dus grosir isi 24)","Minuman",18300,"dus"],["MNM033-D","TEH PUCUK (Dus isi 24)","Minuman",62000,"dus"],["MNM034-D","TEH RIO (SATUAN/GROSIR) (Dus isi 24)","Minuman",18500,"dus"],["MNM034-G","TEH RIO (SATUAN/GROSIR) (Dus grosir isi 24)","Minuman",18300,"dus"],["MNM035-D","TIRTA BOTOL (SATUAN/GROSIR) (Dus isi 24)","Minuman",26000,"dus"],["MNM035-G","TIRTA BOTOL (SATUAN/GROSIR) (Dus grosir isi 24)","Minuman",25500,"dus"],["MNM036-D","TIRTA GELAS (SATUAN/GROSIR) (Dus isi 48)","Minuman",17000,"dus"],["MNM036-G","TIRTA GELAS (SATUAN/GROSIR) (Dus grosir isi 48)","Minuman",16500,"dus"],["MNM037-S","TIRTA 1,5ML (Satuan)","Minuman",29000,"pcs"],["MNM038-S","JELLY CINGCAU MADU (Satuan)","Minuman",18000,"pcs"],["BMB001-R","DESAKU BALADO (Renceng)","Bumbu",22000,"rcg"],["BMB001-D","DESAKU BALADO (Dus)","Bumbu",255000,"dus"],["BMB002-R","DESAKU CABE (Renceng)","Bumbu",19000,"rcg"],["BMB002-D","DESAKU CABE (Dus)","Bumbu",340000,"dus"],["BMB003-R","DESAKU KUNYIT (Renceng)","Bumbu",19000,"rcg"],["BMB003-D","DESAKU KUNYIT (Dus)","Bumbu",340000,"dus"],["BMB004-R","DESAKU MARINASI (Renceng)","Bumbu",19000,"rcg"],["BMB004-D","DESAKU MARINASI (Dus)","Bumbu",340000,"dus"],["BMB005-R","GULA LAKU (Renceng)","Bumbu",8500,"rcg"],["BMB005-D","GULA LAKU (Dus)","Bumbu",82000,"dus"],["BMB006-R","KECAP BANGO 1.000 (Renceng)","Bumbu",10000,"rcg"],["BMB006-D","KECAP BANGO 1.000 (Dus)","Bumbu",117000,"dus"],["BMB007-R","KECAP BANGO 10.000 (Renceng)","Bumbu",9000,"rcg"],["BMB007-D","KECAP BANGO 10.000 (Dus)","Bumbu",212000,"dus"],["BMB008-R","KECAP BANGO 2.000 (Renceng)","Bumbu",1600,"rcg"],["BMB008-D","KECAP BANGO 2.000 (Dus)","Bumbu",117000,"dus"],["BMB009-R","KECAP BANGO 3.000 (Renceng)","Bumbu",2400,"rcg"],["BMB009-D","KECAP BANGO 3.000 (Dus)","Bumbu",117000,"dus"],["BMB010-R","KECAP BANGO BESAR (Renceng)","Bumbu",21500,"rcg"],["BMB010-D","KECAP BANGO BESAR (Dus)","Bumbu",252000,"dus"],["BMB011-R","KECAP SEDAP 2.000 (Renceng)","Bumbu",1600,"rcg"],["BMB011-D","KECAP SEDAP 2.000 (Dus)","Bumbu",73000,"dus"],["BMB012-R","KECAP SEDAP 500 (Renceng)","Bumbu",4500,"rcg"],["BMB012-D","KECAP SEDAP 500 (Dus)","Bumbu",75000,"dus"],["BMB013-R","KECAP SEDAP BESAR (Renceng)","Bumbu",12500,"rcg"],["BMB013-D","KECAP SEDAP BESAR (Dus)","Bumbu",145000,"dus"],["BMB014-S","LADAKU (RCG/PAK/DUS) (Satuan)","Bumbu",9500,"pcs"],["BMB014-R","LADAKU (RCG/PAK/DUS) (Renceng)","Bumbu",57000,"rcg"],["BMB014-D","LADAKU (RCG/PAK/DUS) (Dus)","Bumbu",450000,"dus"],["BMB015-R","MASAKO 1 ONS (Renceng)","Bumbu",4000,"rcg"],["BMB015-D","MASAKO 1 ONS (Dus)","Bumbu",175000,"dus"],["BMB016-R","MASAKO 1/4 (Renceng)","Bumbu",8300,"rcg"],["BMB016-D","MASAKO 1/4 (Dus)","Bumbu",395000,"dus"],["BMB017-R","MASAKO RENCENG (Renceng)","Bumbu",4500,"rcg"],["BMB017-D","MASAKO RENCENG (Dus)","Bumbu",262000,"dus"],["BMB018-R","ROYCO 1 ONS (Renceng)","Bumbu",4300,"rcg"],["BMB018-D","ROYCO 1 ONS (Dus)","Bumbu",146000,"dus"],["BMB019-R","ROYCO 1/4 (Renceng)","Bumbu",8300,"rcg"],["BMB019-D","ROYCO 1/4 (Dus)","Bumbu",196000,"dus"],["BMB020-R","ROYCO AYAM (Renceng)","Bumbu",4500,"rcg"],["BMB020-D","ROYCO AYAM (Dus)","Bumbu",213000,"dus"],["BMB021-R","ROYCO SAPI (Renceng)","Bumbu",4500,"rcg"],["BMB021-D","ROYCO SAPI (Dus)","Bumbu",213000,"dus"],["BMB022-R","SAORI SAOS TIRAM (Renceng)","Bumbu",25000,"rcg"],["BMB022-D","SAORI SAOS TIRAM (Dus)","Bumbu",29500,"dus"],["BMB023-R","SASA 1 ONS (Renceng)","Bumbu",52500,"rcg"],["BMB023-D","SASA 1 ONS (Dus)","Bumbu",625000,"dus"],["BMB024-R","SASA 1/4 (Renceng)","Bumbu",12800,"rcg"],["BMB024-D","SASA 1/4 (Dus)","Bumbu",605000,"dus"],["BMB025-R","SASA 1000 (Renceng)","Bumbu",18000,"rcg"],["BMB025-D","SASA 1000 (Dus)","Bumbu",213000,"dus"],["BMB026-R","SASA 10000 (Renceng)","Bumbu",9000,"rcg"],["BMB026-D","SASA 10000 (Dus)","Bumbu",425000,"dus"],["BMB027-R","SASA 500 (Renceng)","Bumbu",9000,"rcg"],["BMB027-D","SASA 500 (Dus)","Bumbu",236000,"dus"],["BMB028-R","SASA 5000 (Renceng)","Bumbu",4500,"rcg"],["BMB028-D","SASA 5000 (Dus)","Bumbu",353000,"dus"],["BMB029-R","SEDAP BUMBU (Renceng)","Bumbu",4400,"rcg"],["BMB029-D","SEDAP BUMBU (Dus)","Bumbu",127000,"dus"],["BMB030-D","SUN KARA (Dus)","Bumbu",150000,"dus"],["BMB031-R","SUNLIGHT 2000 (Renceng)","Bumbu",1600,"rcg"],["BMB031-D","SUNLIGHT 2000 (Dus)","Bumbu",110000,"dus"],["BMB032-R","SUNLIGHT 5000 (Renceng)","Bumbu",4000,"rcg"],["BMB032-D","SUNLIGHT 5000 (Dus)","Bumbu",90000,"dus"],["BMB033-D","SWALLOW AGAR (Dus)","Bumbu",45000,"dus"],["KPS001-S","ABC ES KOPI AREN (Satuan)","Kopi & Susu",12500,"pcs"],["KPS001-D","ABC ES KOPI AREN (Dus)","Kopi & Susu",145000,"dus"],["KPS002-S","ABC PLUS (Satuan)","Kopi & Susu",8000,"pcs"],["KPS002-D","ABC PLUS (Dus)","Kopi & Susu",90000,"dus"],["KPS003-S","ABC SUSU (Satuan)","Kopi & Susu",16500,"pcs"],["KPS003-D","ABC SUSU (Dus)","Kopi & Susu",192000,"dus"],["KPS004-S","BENDERA PTH / CKLT (Satuan)","Kopi & Susu",16000,"pcs"],["KPS004-D","BENDERA PTH / CKLT (Dus)","Kopi & Susu",158000,"dus"],["KPS005-S","CAP ENAK SAK (Satuan)","Kopi & Susu",14000,"pcs"],["KPS005-D","CAP ENAK SAK (Dus)","Kopi & Susu",137000,"dus"],["KPS006-S","CREAMY LATTE (Satuan)","Kopi & Susu",16000,"pcs"],["KPS006-D","CREAMY LATTE (Dus)","Kopi & Susu",185000,"dus"],["KPS007-S","ENERGEN CKLT / VAN (Satuan)","Kopi & Susu",19250,"pcs"],["KPS007-D","ENERGEN CKLT / VAN (Dus isi 16)","Kopi & Susu",305000,"dus"],["KPS008-S","FRESCO MOCA (Satuan)","Kopi & Susu",15000,"pcs"],["KPS008-D","FRESCO MOCA (Dus isi 12)","Kopi & Susu",148500,"dus"],["KPS009-S","FRESCO SUSU (Satuan)","Kopi & Susu",15000,"pcs"],["KPS009-D","FRESCO SUSU (Dus isi 12)","Kopi & Susu",148500,"dus"],["KPS010-S","GAJAH (Satuan)","Kopi & Susu",14000,"pcs"],["KPS010-D","GAJAH (Dus isi 12)","Kopi & Susu",164000,"dus"],["KPS011-S","GOODAY LATTE (Satuan)","Kopi & Susu",14500,"pcs"],["KPS011-D","GOODAY LATTE (Dus isi 12)","Kopi & Susu",167000,"dus"],["KPS012-S","GOODAY MOCACINO (Satuan)","Kopi & Susu",14000,"pcs"],["KPS012-D","GOODAY MOCACINO (Dus isi 12)","Kopi & Susu",165000,"dus"],["KPS013-S","INDOCAFE (Satuan)","Kopi & Susu",158000,"pcs"],["KPS013-D","INDOCAFE (Dus)","Kopi & Susu",785000,"dus"],["KPS014-S","KAPAL API MINI (Satuan)","Kopi & Susu",15500,"pcs"],["KPS014-D","KAPAL API MINI (Dus isi 12)","Kopi & Susu",180000,"dus"],["KPS015-S","KAPAL API MIX (Satuan)","Kopi & Susu",16500,"pcs"],["KPS015-D","KAPAL API MIX (Dus isi 12)","Kopi & Susu",192000,"dus"],["KPS016-S","LIONG GULA (Satuan)","Kopi & Susu",32500,"pcs"],["KPS016-D","LIONG GULA (Dus)","Kopi & Susu",640000,"dus"],["KPS017-S","LUAK WHITE KOPI (Satuan)","Kopi & Susu",15000,"pcs"],["KPS017-D","LUAK WHITE KOPI (Dus isi 12)","Kopi & Susu",177000,"dus"],["KPS018-S","MAXTEA (TEHTARIK) (Satuan)","Kopi & Susu",107000,"pcs"],["KPS018-D","MAXTEA (TEHTARIK) (Dus)","Kopi & Susu",855000,"dus"],["KPS019-S","TOP CAPUCINO (Satuan)","Kopi & Susu",18000,"pcs"],["KPS019-D","TOP CAPUCINO (Dus isi 12)","Kopi & Susu",213000,"dus"],["KPS020-S","TOP GULA AREN (Satuan)","Kopi & Susu",16500,"pcs"],["KPS020-D","TOP GULA AREN (Dus isi 12)","Kopi & Susu",193000,"dus"],["KPS021-S","TOP WHITE COFFEE (Satuan)","Kopi & Susu",11000,"pcs"],["KPS021-D","TOP WHITE COFFEE (Dus isi 12)","Kopi & Susu",130000,"dus"],["KPS022-S","TORABIKA CPUCINO (Satuan)","Kopi & Susu",21000,"pcs"],["KPS022-D","TORABIKA CPUCINO (Dus isi 12)","Kopi & Susu",246000,"dus"],["MIE001-D","INDOMIE AB (Dus isi 40)","Mie",114000,"dus"],["MIE002-D","INDOMIE CABE IJO (Dus isi 40)","Mie",119000,"dus"],["MIE003-D","INDOMIE GORENG (Dus isi 40)","Mie",119000,"dus"],["MIE004-D","INDOMIE KCOK BDG (Dus isi 40)","Mie",119000,"dus"],["MIE005-D","INDOMIE RENDANG (Dus isi 40)","Mie",119000,"dus"],["MIE006-S","MIE GELAS (Satuan)","Mie",8500,"pcs"],["MIE006-D","MIE GELAS (Dus isi 40)","Mie",148000,"dus"],["MIE007-S","MIE GELAS MERCON (Satuan)","Mie",8500,"pcs"],["MIE007-D","MIE GELAS MERCON (Dus isi 40)","Mie",148000,"dus"],["MIE008-D","MIE TASTY (Dus)","Mie",69000,"dus"],["MIE009-S","POP MIE BESAR (Satuan)","Mie",4400,"pcs"],["MIE009-D","POP MIE BESAR (Dus isi 40)","Mie",105000,"dus"],["MIE010-S","POP MIE KECIL (Satuan)","Mie",3100,"pcs"],["MIE010-D","POP MIE KECIL (Dus isi 40)","Mie",37000,"dus"],["MIE011-D","SAKURA GORENG (Dus isi 40)","Mie",67000,"dus"],["MIE012-D","SAKURA SEBLAK (Dus isi 40)","Mie",65000,"dus"],["MIE013-D","SARIMI AB (Dus isi 40)","Mie",106000,"dus"],["MIE014-D","SEDAP BAKSO (Dus isi 40)","Mie",103000,"dus"],["MIE015-D","SEDAP BAWANG (Dus isi 40)","Mie",103000,"dus"],["MIE016-D","SEDAP GORENG (Dus isi 40)","Mie",109000,"dus"],["MIE017-D","SEDAP KARI (Dus isi 40)","Mie",103000,"dus"],["MIE018-D","SEDAP KOREA (Dus isi 40)","Mie",109000,"dus"],["MIE019-D","SEDAP SINGAPORE (Dus isi 40)","Mie",103000,"dus"],["MIE020-D","SEDAP SOTO (Dus isi 40)","Mie",103000,"dus"],["MIE021-D","SUKSES GEPREK (Dus isi 40)","Mie",82000,"dus"],["MIE022-D","SUKSES GORENG (Dus isi 40)","Mie",82000,"dus"],["MIE023-D","SUKSES KUAH (Dus isi 40)","Mie",78000,"dus"],["MIE024-S","SUPER BUBUR (Satuan)","Mie",8500,"pcs"],["MIE024-D","SUPER BUBUR (Dus isi 40)","Mie",102000,"dus"],["MIE025-D","TOP RAMEN (Dus isi 40)","Mie",65000,"dus"],["MIE026-S","WOW SPAGETI GRG (Satuan)","Mie",21500,"pcs"],["MIE026-D","WOW SPAGETI GRG (Dus isi 40)","Mie",105000,"dus"],["MIE027-S","WOW SPAGETI MRH (Satuan)","Mie",21500,"pcs"],["MIE027-D","WOW SPAGETI MRH (Dus isi 40)","Mie",105000,"dus"],["LLN001-S","ADEM SARI (Satuan)","Lain-lain",51500,"pcs"],["LLN001-D","ADEM SARI (Dus)","Lain-lain",1228000,"dus"],["LLN002-S","AMPLOP (Satuan)","Lain-lain",10500,"pcs"],["LLN002-D","AMPLOP (Dus)","Lain-lain",50000,"dus"],["LLN003-S","ANGET SARI (Satuan)","Lain-lain",52000,"pcs"],["LLN003-D","ANGET SARI (Dus)","Lain-lain",255000,"dus"],["LLN004-S","BABY L (Satuan)","Lain-lain",18500,"pcs"],["LLN004-D","BABY L (Dus)","Lain-lain",72000,"dus"],["LLN005-S","BABY M (Satuan)","Lain-lain",18500,"pcs"],["LLN005-D","BABY M (Dus)","Lain-lain",72000,"dus"],["LLN006-S","BABY S (Satuan)","Lain-lain",18000,"pcs"],["LLN006-D","BABY S (Dus)","Lain-lain",70000,"dus"],["LLN007-S","BABY XL (Satuan)","Lain-lain",23500,"pcs"],["LLN007-D","BABY XL (Dus)","Lain-lain",90000,"dus"],["LLN008-S","BENG BENG (Satuan)","Lain-lain",35500,"pcs"],["LLN008-D","BENG BENG (Dus)","Lain-lain",282000,"dus"],["LLN009-S","CHOKI CHOKI (Satuan)","Lain-lain",17000,"pcs"],["LLN009-D","CHOKI CHOKI (Dus)","Lain-lain",152000,"dus"],["LLN010-S","CIPTADEN ODOL 190G (Satuan)","Lain-lain",110000,"pcs"],["LLN010-D","CIPTADEN ODOL 190G (Dus)","Lain-lain",220000,"dus"],["LLN011-S","CIPTADEN ODOL 75G (Satuan)","Lain-lain",38500,"pcs"],["LLN011-D","CIPTADEN ODOL 75G (Dus)","Lain-lain",227000,"dus"],["LLN012-S","DRINK BENG BENG (Satuan)","Lain-lain",21000,"pcs"],["LLN012-D","DRINK BENG BENG (Dus)","Lain-lain",246000,"dus"],["LLN013-D","GARAM JEMPOL (Dus)","Lain-lain",62000,"dus"],["LLN014-D","GULA (Dus)","Lain-lain",880000,"dus"],["LLN015-S","GULA 1/4 1KG (Satuan)","Lain-lain",18500,"pcs"],["LLN016-D","KOREK TOKAI (Dus)","Lain-lain",87000,"dus"],["LLN017-D","KOREK YOSHI (Dus)","Lain-lain",60000,"dus"],["LLN018-S","KRATINGDENG (Satuan)","Lain-lain",48000,"pcs"],["LLN018-D","KRATINGDENG (Dus)","Lain-lain",235000,"dus"],["LLN019-S","LAVENDA (Satuan)","Lain-lain",9000,"pcs"],["LLN019-D","LAVENDA (Dus)","Lain-lain",102000,"dus"],["LLN020-S","MAMIPOKO L (Satuan)","Lain-lain",14000,"pcs"],["LLN020-D","MAMIPOKO L (Dus)","Lain-lain",123000,"dus"],["LLN021-S","MAMIPOKO M (Satuan)","Lain-lain",14000,"pcs"],["LLN021-D","MAMIPOKO M (Dus)","Lain-lain",123000,"dus"],["LLN022-S","MAMIPOKO XL (Satuan)","Lain-lain",17500,"pcs"],["LLN022-D","MAMIPOKO XL (Dus)","Lain-lain",154000,"dus"],["LLN023-D","MASKER ANAK (Dus)","Lain-lain",50000,"dus"],["LLN025-S","MP ASI (Satuan)","Lain-lain",12000,"pcs"],["LLN025-D","MP ASI (Dus)","Lain-lain",295000,"dus"],["LLN026-S","NABATI COKLAT 2000 (Satuan)","Lain-lain",1600,"pcs"],["LLN026-D","NABATI COKLAT 2000 (Dus)","Lain-lain",153000,"dus"],["LLN027-S","NABATI KEJU 5000 (Satuan)","Lain-lain",4000,"pcs"],["LLN027-D","NABATI KEJU 5000 (Dus)","Lain-lain",117000,"dus"],["LLN028-S","PEPSODENT ODOL JUMBO (Satuan)","Lain-lain",155000,"pcs"],["LLN029-S","PEPSODENT ODOL EKO (Satuan)","Lain-lain",52500,"pcs"],["LLN030-S","PERMEN KIS (Satuan)","Lain-lain",6500,"pcs"],["LLN030-D","PERMEN KIS (Dus)","Lain-lain",150000,"dus"],["LLN031-S","PERMEN KOPIKO (Satuan)","Lain-lain",9500,"pcs"],["LLN031-D","PERMEN KOPIKO (Dus)","Lain-lain",220000,"dus"],["LLN032-S","PERMEN RELAXA (Satuan)","Lain-lain",5700,"pcs"],["LLN032-D","PERMEN RELAXA (Dus)","Lain-lain",135000,"dus"],["LLN035-S","PROTEX DAUN SIRIH (Satuan)","Lain-lain",4500,"pcs"],["LLN035-D","PROTEX DAUN SIRIH (Dus)","Lain-lain",107000,"dus"],["LLN036-S","ROMA KELAPA (Satuan)","Lain-lain",57000,"pcs"],["LLN036-D","ROMA KELAPA (Dus)","Lain-lain",225000,"dus"],["LLN037-S","SARIWANGI (Satuan)","Lain-lain",9750,"pcs"],["LLN037-D","SARIWANGI (Dus)","Lain-lain",225000,"dus"],["LLN038-S","SOSIS (Satuan)","Lain-lain",18500,"pcs"],["LLN038-D","SOSIS (Dus)","Lain-lain",108000,"dus"],["LLN039-S","SWEETY (Satuan)","Lain-lain",17500,"pcs"],["LLN039-D","SWEETY (Dus)","Lain-lain",135000,"dus"],["LLN040-D","TEGU (Dus)","Lain-lain",217000,"dus"],["LLN041-S","TEH BOTOL RENCENG (Satuan)","Lain-lain",8250,"pcs"],["LLN041-D","TEH BOTOL RENCENG (Dus)","Lain-lain",196000,"dus"],["LLN042-D","TERIGU KUNCI BIRU (Dus)","Lain-lain",228000,"dus"],["LLN043-D","TERIGU SEGITIGA BIRU (Dus)","Lain-lain",232000,"dus"],["LLN044-S","TIKTUK LINGGA (Satuan)","Lain-lain",37500,"pcs"],["LLN044-D","TIKTUK LINGGA (Dus)","Lain-lain",185000,"dus"],["LLN045-S","TISSUE VINDA (Satuan)","Lain-lain",7000,"pcs"],["LLN045-D","TISSUE VINDA (Dus)","Lain-lain",250000,"dus"],["LLN046-D","TROMPET (Dus)","Lain-lain",407000,"dus"],["LLN051-S","TEH PABRIK (Satuan)","Lain-lain",23000,"pcs"],["OBT001-D","ANTANGIN CAIR (Dus)","Obat",38500,"dus"],["OBT002-S","BALSEM GELIGA KECIL (Satuan)","Obat",5000,"pcs"],["OBT002-D","BALSEM GELIGA KECIL (Dus)","Obat",58000,"dus"],["OBT003-S","BALSEM GELIGA BESAR (Satuan)","Obat",8500,"pcs"],["OBT003-D","BALSEM GELIGA BESAR (Dus)","Obat",100000,"dus"],["OBT004-S","BALSEM LANG (Satuan)","Obat",8500,"pcs"],["OBT004-D","BALSEM LANG (Dus)","Obat",100000,"dus"],["OBT005-D","BETADINE (Dus)","Obat",39000,"dus"],["OBT006-S","CONTREXYN (Satuan)","Obat",1200,"pcs"],["OBT006-D","CONTREXYN (Dus)","Obat",28500,"dus"],["OBT007-S","DIAPET (Satuan)","Obat",6000,"pcs"],["OBT007-D","DIAPET (Dus)","Obat",68500,"dus"],["OBT008-S","ENTROSTOP (Satuan)","Obat",17000,"pcs"],["OBT008-D","ENTROSTOP (Dus)","Obat",102000,"dus"],["OBT009-S","EXTRA JOS (Satuan)","Obat",13500,"pcs"],["OBT009-D","EXTRA JOS (Dus)","Obat",65500,"dus"],["OBT010-D","HANSAPLAST (Dus)","Obat",28500,"dus"],["OBT011-S","HIT KALENG BOTOL K (Satuan)","Obat",10500,"pcs"],["OBT011-D","HIT KALENG BOTOL K (Dus)","Obat",18500,"dus"],["OBT012-S","HIT MAGIC (Satuan)","Obat",9000,"pcs"],["OBT012-D","HIT MAGIC (Dus)","Obat",105000,"dus"],["OBT013-S","HIT MAT (Satuan)","Obat",9000,"pcs"],["OBT013-D","HIT MAT (Dus)","Obat",185000,"dus"],["OBT014-S","JUMBO KINGKONG (Satuan)","Obat",4800,"pcs"],["OBT014-D","JUMBO KINGKONG (Dus)","Obat",270000,"dus"],["OBT015-S","KAYU PUTIH 15ML (Satuan)","Obat",6150,"pcs"],["OBT015-D","KAYU PUTIH 15ML (Dus)","Obat",73000,"dus"],["OBT016-S","KAYU PUTIH 30ML (Satuan)","Obat",11250,"pcs"],["OBT016-D","KAYU PUTIH 30ML (Dus)","Obat",133000,"dus"],["OBT017-S","KAYU PUTIH 60ML (Satuan)","Obat",12250,"pcs"],["OBT017-D","KAYU PUTIH 60ML (Dus)","Obat",245000,"dus"],["OBT018-S","KAYU PUTIH 120ML (Satuan)","Obat",37500,"pcs"],["OBT018-D","KAYU PUTIH 120ML (Dus)","Obat",450000,"dus"],["OBT019-D","KOMIX (Dus)","Obat",42500,"dus"],["OBT020-S","KUKU BIMA (Satuan)","Obat",6000,"pcs"],["OBT020-D","KUKU BIMA (Dus)","Obat",59500,"dus"],["OBT021-D","LASERIN (Dus)","Obat",28500,"dus"],["OBT022-S","MINYAK GPU (Satuan)","Obat",9250,"pcs"],["OBT022-D","MINYAK GPU (Dus)","Obat",109000,"dus"],["OBT023-S","MINYAK MY BABY (Satuan)","Obat",14000,"pcs"],["OBT023-D","MINYAK MY BABY (Dus)","Obat",165000,"dus"],["OBT024-S","MIXAGRIP K (Satuan)","Obat",3200,"pcs"],["OBT024-D","MIXAGRIP K (Dus)","Obat",78000,"dus"],["OBT025-S","MIXAGRIP PB (Satuan)","Obat",3500,"pcs"],["OBT025-D","MIXAGRIP PB (Dus)","Obat",86000,"dus"],["OBT026-S","MYLANTA (Satuan)","Obat",7000,"pcs"],["OBT026-D","MYLANTA (Dus)","Obat",83000,"dus"],["OBT027-S","OSKADON (Satuan)","Obat",1850,"pcs"],["OBT027-D","OSKADON (Dus)","Obat",90000,"dus"],["OBT028-S","OSKADON SP (Satuan)","Obat",1850,"pcs"],["OBT028-D","OSKADON SP (Dus)","Obat",42000,"dus"],["OBT029-S","PARAMEX (Satuan)","Obat",2350,"pcs"],["OBT029-D","PARAMEX (Dus)","Obat",115000,"dus"],["OBT030-S","PILKITA HERBAL (Satuan)","Obat",2050,"pcs"],["OBT030-D","PILKITA HERBAL (Dus)","Obat",40000,"dus"],["OBT031-S","PROMAG (Satuan)","Obat",25000,"pcs"],["OBT031-D","PROMAG (Dus)","Obat",99000,"dus"],["OBT032-S","RHEUMACIL (Satuan)","Obat",8250,"pcs"],["OBT032-D","RHEUMACIL (Dus)","Obat",196000,"dus"],["OBT033-S","SALONPAS (Satuan)","Obat",7250,"pcs"],["OBT033-D","SALONPAS (Dus)","Obat",70000,"dus"],["OBT034-D","TOLAK ANGIN CAIR (Dus)","Obat",43500,"dus"],["OBT035-S","VAPE (Satuan)","Obat",4300,"pcs"],["OBT035-D","VAPE (Dus)","Obat",253000,"dus"],["OBT036-D","WAISAN (Dus)","Obat",81000,"dus"],["RKK001-E","234 KRETEK 12 (Bungkus)","Rokok",20000,"bks"],["RKK001-G","234 KRETEK 12 (Bungkus grosir)","Rokok",19600,"bks"],["RKK001-P","234 KRETEK 12 (Pak isi 10)","Rokok",196000,"pak"],["RKK002-E","234 REFILL (Bungkus)","Rokok",22000,"bks"],["RKK002-G","234 REFILL (Bungkus grosir)","Rokok",21700,"bks"],["RKK002-P","234 REFILL (Pak isi 10)","Rokok",217000,"pak"],["RKK003-E","76 APEL (Bungkus)","Rokok",15000,"bks"],["RKK003-G","76 APEL (Bungkus grosir)","Rokok",14450,"bks"],["RKK003-P","76 APEL (Pak isi 10)","Rokok",144500,"pak"],["RKK004-E","76 MANGGA / NANAS (Bungkus)","Rokok",15000,"bks"],["RKK004-G","76 MANGGA / NANAS (Bungkus grosir)","Rokok",14500,"bks"],["RKK004-P","76 MANGGA / NANAS (Pak isi 10)","Rokok",145000,"pak"],["RKK005-E","76 ROYAL (Bungkus)","Rokok",16000,"bks"],["RKK005-G","76 ROYAL (Bungkus grosir)","Rokok",15350,"bks"],["RKK005-P","76 ROYAL (Pak isi 10)","Rokok",153500,"pak"],["RKK006-E","BLACK MATCHA (Bungkus)","Rokok",16000,"bks"],["RKK006-G","BLACK MATCHA (Bungkus grosir)","Rokok",15800,"bks"],["RKK006-P","BLACK MATCHA (Pak isi 10)","Rokok",158000,"pak"],["RKK007-E","BROWN COFFEE (Bungkus)","Rokok",16000,"bks"],["RKK007-G","BROWN COFFEE (Bungkus grosir)","Rokok",15500,"bks"],["RKK007-P","BROWN COFFEE (Pak isi 10)","Rokok",155000,"pak"],["RKK008-E","CAMEL 12 (Bungkus)","Rokok",19000,"bks"],["RKK008-G","CAMEL 12 (Bungkus grosir)","Rokok",18600,"bks"],["RKK008-P","CAMEL 12 (Pak isi 10)","Rokok",186000,"pak"],["RKK009-E","CAMEL 16 (Bungkus)","Rokok",25000,"bks"],["RKK009-G","CAMEL 16 (Bungkus grosir)","Rokok",24800,"bks"],["RKK009-P","CAMEL 16 (Pak isi 10)","Rokok",248000,"pak"],["RKK010-E","CAMEL PUTIH (Bungkus)","Rokok",32000,"bks"],["RKK010-G","CAMEL PUTIH (Bungkus grosir)","Rokok",31000,"bks"],["RKK010-P","CAMEL PUTIH (Pak isi 10)","Rokok",310000,"pak"],["RKK011-E","CENGKEH 12 (Bungkus)","Rokok",8000,"bks"],["RKK011-G","CENGKEH 12 (Bungkus grosir)","Rokok",7600,"bks"],["RKK011-P","CENGKEH 12 (Pak isi 10)","Rokok",76000,"pak"],["RKK012-E","CENGKEH 16 (Bungkus)","Rokok",10000,"bks"],["RKK012-G","CENGKEH 16 (Bungkus grosir)","Rokok",9600,"bks"],["RKK012-P","CENGKEH 16 (Pak isi 10)","Rokok",96000,"pak"],["RKK013-E","DJARUM COKLAT (Bungkus)","Rokok",17000,"bks"],["RKK013-G","DJARUM COKLAT (Bungkus grosir)","Rokok",16300,"bks"],["RKK013-P","DJARUM COKLAT (Pak isi 10)","Rokok",163000,"pak"],["RKK014-E","DJARUM COKLAT ELITE (Bungkus)","Rokok",17000,"bks"],["RKK014-G","DJARUM COKLAT ELITE (Bungkus grosir)","Rokok",16300,"bks"],["RKK014-P","DJARUM COKLAT ELITE (Pak isi 10)","Rokok",163000,"pak"],["RKK015-E","DJARUM COKLAT XTRA (Bungkus)","Rokok",16000,"bks"],["RKK015-G","DJARUM COKLAT XTRA (Bungkus grosir)","Rokok",15400,"bks"],["RKK015-P","DJARUM COKLAT XTRA (Pak isi 10)","Rokok",154000,"pak"],["RKK016-E","DJARUM SUPER 12 (Bungkus)","Rokok",24500,"bks"],["RKK016-G","DJARUM SUPER 12 (Bungkus grosir)","Rokok",23800,"bks"],["RKK016-P","DJARUM SUPER 12 (Pak isi 10)","Rokok",238000,"pak"],["RKK017-E","DJARUM SUPER 16 (Bungkus)","Rokok",32000,"bks"],["RKK017-G","DJARUM SUPER 16 (Bungkus grosir)","Rokok",30900,"bks"],["RKK017-P","DJARUM SUPER 16 (Pak isi 10)","Rokok",309000,"pak"],["RKK018-E","DUFF BOLD (Bungkus)","Rokok",27000,"bks"],["RKK018-G","DUFF BOLD (Bungkus grosir)","Rokok",26550,"bks"],["RKK018-P","DUFF BOLD (Pak isi 10)","Rokok",265500,"pak"],["RKK019-E","DUFF RED (Bungkus)","Rokok",24000,"bks"],["RKK019-G","DUFF RED (Bungkus grosir)","Rokok",23500,"bks"],["RKK019-P","DUFF RED (Pak isi 10)","Rokok",235000,"pak"],["RKK020-E","ESSE CHANGE (Bungkus)","Rokok",41000,"bks"],["RKK020-G","ESSE CHANGE (Bungkus grosir)","Rokok",40150,"bks"],["RKK020-P","ESSE CHANGE (Pak isi 10)","Rokok",401500,"pak"],["RKK021-E","GG MERAH (Bungkus)","Rokok",16000,"bks"],["RKK021-G","GG MERAH (Bungkus grosir)","Rokok",15300,"bks"],["RKK021-P","GG MERAH (Pak isi 10)","Rokok",153000,"pak"],["RKK022-E","GG MERAH 16 (Bungkus)","Rokok",18000,"bks"],["RKK022-G","GG MERAH 16 (Bungkus grosir)","Rokok",18250,"bks"],["RKK022-P","GG MERAH 16 (Pak isi 10)","Rokok",182500,"pak"],["RKK023-E","GUDANG GARAM (Bungkus)","Rokok",26000,"bks"],["RKK023-G","GUDANG GARAM (Bungkus grosir)","Rokok",25850,"bks"],["RKK023-P","GUDANG GARAM (Pak isi 20)","Rokok",517000,"pak"],["RKK024-E","JAZZY (Bungkus)","Rokok",10000,"bks"],["RKK024-G","JAZZY (Bungkus grosir)","Rokok",9650,"bks"],["RKK024-P","JAZZY (Pak isi 10)","Rokok",96500,"pak"],["RKK025-E","JAZZY MAX (Bungkus)","Rokok",17000,"bks"],["RKK025-G","JAZZY MAX (Bungkus grosir)","Rokok",16500,"bks"],["RKK025-P","JAZZY MAX (Pak isi 10)","Rokok",165000,"pak"],["RKK026-E","LA BOLD 12 (Bungkus)","Rokok",22000,"bks"],["RKK026-G","LA BOLD 12 (Bungkus grosir)","Rokok",21900,"bks"],["RKK026-P","LA BOLD 12 (Pak isi 10)","Rokok",219000,"pak"],["RKK027-E","LA BOLD 20 (Bungkus)","Rokok",38000,"bks"],["RKK027-G","LA BOLD 20 (Bungkus grosir)","Rokok",37300,"bks"],["RKK027-P","LA BOLD 20 (Pak isi 10)","Rokok",373000,"pak"],["RKK028-E","LA LIGHT (Bungkus)","Rokok",34000,"bks"],["RKK028-G","LA LIGHT (Bungkus grosir)","Rokok",33700,"bks"],["RKK028-P","LA LIGHT (Pak isi 10)","Rokok",337000,"pak"],["RKK029-E","MAGNUM BINTANG (Bungkus)","Rokok",24000,"bks"],["RKK029-G","MAGNUM BINTANG (Bungkus grosir)","Rokok",23350,"bks"],["RKK029-P","MAGNUM BINTANG (Pak isi 10)","Rokok",233500,"pak"],["RKK030-E","MAGNUM FILTER (Bungkus)","Rokok",27000,"bks"],["RKK030-G","MAGNUM FILTER (Bungkus grosir)","Rokok",26200,"bks"],["RKK030-P","MAGNUM FILTER (Pak isi 10)","Rokok",262000,"pak"],["RKK031-E","MAGNUM K (REFIL) (Bungkus)","Rokok",14000,"bks"],["RKK031-G","MAGNUM K (REFIL) (Bungkus grosir)","Rokok",13350,"bks"],["RKK031-P","MAGNUM K (REFIL) (Pak isi 10)","Rokok",133500,"pak"],["RKK032-E","MAGNUM MAX 12 (Bungkus)","Rokok",17000,"bks"],["RKK032-G","MAGNUM MAX 12 (Bungkus grosir)","Rokok",16250,"bks"],["RKK032-P","MAGNUM MAX 12 (Pak isi 10)","Rokok",162500,"pak"],["RKK033-E","MAGNUM MAX 20 (Bungkus)","Rokok",28000,"bks"],["RKK033-G","MAGNUM MAX 20 (Bungkus grosir)","Rokok",27000,"bks"],["RKK033-P","MAGNUM MAX 20 (Pak isi 10)","Rokok",270000,"pak"],["RKK034-E","MARLBORO BLACK (Bungkus)","Rokok",40000,"bks"],["RKK034-G","MARLBORO BLACK (Bungkus grosir)","Rokok",39850,"bks"],["RKK034-P","MARLBORO BLACK (Pak isi 10)","Rokok",398500,"pak"],["RKK035-E","MARLBORO MERAH (Bungkus)","Rokok",52000,"bks"],["RKK035-G","MARLBORO MERAH (Bungkus grosir)","Rokok",51700,"bks"],["RKK035-P","MARLBORO MERAH (Pak isi 10)","Rokok",517000,"pak"],["RKK036-E","MLD 12 (Bungkus)","Rokok",22000,"bks"],["RKK036-G","MLD 12 (Bungkus grosir)","Rokok",21800,"bks"],["RKK036-P","MLD 12 (Pak isi 10)","Rokok",218000,"pak"],["RKK037-E","MLD 20 (Bungkus)","Rokok",37000,"bks"],["RKK037-G","MLD 20 (Bungkus grosir)","Rokok",36500,"bks"],["RKK037-P","MLD 20 (Pak isi 10)","Rokok",365000,"pak"],["RKK038-E","MUSTANG (Bungkus)","Rokok",17000,"bks"],["RKK038-G","MUSTANG (Bungkus grosir)","Rokok",16500,"bks"],["RKK038-P","MUSTANG (Pak isi 10)","Rokok",165000,"pak"],["RKK039-E","NESLITE (Bungkus)","Rokok",22000,"bks"],["RKK039-G","NESLITE (Bungkus grosir)","Rokok",21600,"bks"],["RKK039-P","NESLITE (Pak isi 10)","Rokok",216000,"pak"],["RKK040-E","PRIMA (Bungkus)","Rokok",16000,"bks"],["RKK040-G","PRIMA (Bungkus grosir)","Rokok",15600,"bks"],["RKK040-P","PRIMA (Pak isi 10)","Rokok",156000,"pak"],["RKK041-E","RAJA DAUN (Bungkus)","Rokok",12000,"bks"],["RKK041-G","RAJA DAUN (Bungkus grosir)","Rokok",11950,"bks"],["RKK041-P","RAJA DAUN (Pak isi 10)","Rokok",119500,"pak"],["RKK042-E","SAGA (Bungkus)","Rokok",10000,"bks"],["RKK042-G","SAGA (Bungkus grosir)","Rokok",9850,"bks"],["RKK042-P","SAGA (Pak isi 10)","Rokok",98500,"pak"],["RKK043-E","SAMPOERNA KRETEK (Bungkus)","Rokok",16000,"bks"],["RKK043-G","SAMPOERNA KRETEK (Bungkus grosir)","Rokok",15350,"bks"],["RKK043-P","SAMPOERNA KRETEK (Pak isi 10)","Rokok",153500,"pak"],["RKK044-E","SAMPOERNA MILD (Bungkus)","Rokok",36000,"bks"],["RKK044-G","SAMPOERNA MILD (Bungkus grosir)","Rokok",35400,"bks"],["RKK044-P","SAMPOERNA MILD (Pak isi 10)","Rokok",354000,"pak"],["RKK045-E","SERGIO (Bungkus)","Rokok",28000,"bks"],["RKK045-G","SERGIO (Bungkus grosir)","Rokok",27000,"bks"],["RKK045-P","SERGIO (Pak isi 10)","Rokok",270000,"pak"],["RKK046-E","SRIWEDARI (Bungkus)","Rokok",14000,"bks"],["RKK046-G","SRIWEDARI (Bungkus grosir)","Rokok",13500,"bks"],["RKK046-P","SRIWEDARI (Pak isi 10)","Rokok",135000,"pak"],["RKK047-E","SURYA 12 (Bungkus)","Rokok",26000,"bks"],["RKK047-G","SURYA 12 (Bungkus grosir)","Rokok",25850,"bks"],["RKK047-P","SURYA 12 (Pak isi 10)","Rokok",258500,"pak"],["RKK048-E","SURYA 16 (Bungkus)","Rokok",35000,"bks"],["RKK048-G","SURYA 16 (Bungkus grosir)","Rokok",34850,"bks"],["RKK048-P","SURYA 16 (Pak isi 10)","Rokok",348500,"pak"],["RKK049-E","TEBU (Bungkus)","Rokok",11000,"bks"],["RKK049-G","TEBU (Bungkus grosir)","Rokok",10950,"bks"],["RKK049-P","TEBU (Pak isi 10)","Rokok",109500,"pak"],["RKK050-G","TWIZZ (Bungkus grosir)","Rokok",24700,"bks"],["SBN001-S","EKONOMI 1000 (Satuan)","Sabun",850,"pcs"],["SBN001-D","EKONOMI 1000 (Dus)","Sabun",48000,"dus"],["SBN002-S","EKONOMI 2000 (Satuan)","Sabun",1750,"pcs"],["SBN002-D","EKONOMI 2000 (Dus)","Sabun",51000,"dus"],["SBN003-S","GIV BATANG (Satuan)","Sabun",32000,"pcs"],["SBN003-D","GIV BATANG (Dus)","Sabun",190000,"dus"],["SBN004-S","GIV CAIR (Satuan)","Sabun",25000,"pcs"],["SBN004-D","GIV CAIR (Dus)","Sabun",96000,"dus"],["SBN005-S","KILAU NIPIS (Satuan)","Sabun",3000,"pcs"],["SBN005-D","KILAU NIPIS (Dus)","Sabun",23000,"dus"],["SBN006-S","LIFEBUOY BATANG (Satuan)","Sabun",33000,"pcs"],["SBN006-D","LIFEBUOY BATANG (Dus)","Sabun",390000,"dus"],["SBN007-S","MAMA LEMON 2000 (Satuan)","Sabun",20000,"pcs"],["SBN007-D","MAMA LEMON 2000 (Dus)","Sabun",36000,"dus"],["SBN008-S","MAMA LEMON 4000 (Satuan)","Sabun",3000,"pcs"],["SBN008-D","MAMA LEMON 4000 (Dus)","Sabun",70000,"dus"],["SBN009-S","MAMA LIME 1000 (Satuan)","Sabun",10000,"pcs"],["SBN009-D","MAMA LIME 1000 (Dus)","Sabun",56000,"dus"],["SBN010-S","NUVO BATANG (Satuan)","Sabun",32000,"pcs"],["SBN010-D","NUVO BATANG (Dus)","Sabun",190000,"dus"],["SBN011-S","NUVO CAIR (Satuan)","Sabun",25000,"pcs"],["SBN011-D","NUVO CAIR (Dus)","Sabun",96000,"dus"],["SBN012-S","RINSO CAIR (Satuan)","Sabun",9500,"pcs"],["SBN012-D","RINSO CAIR (Dus)","Sabun",74000,"dus"],["SBN013-S","SABUN ROYALE (Satuan)","Sabun",4500,"pcs"],["SBN013-D","SABUN ROYALE (Dus)","Sabun",105000,"dus"],["SBN014-S","SHAMPOO CLEAR (Satuan)","Sabun",8800,"pcs"],["SBN014-D","SHAMPOO CLEAR (Dus)","Sabun",350000,"dus"],["SBN015-S","SHAMPOO EMERON (Satuan)","Sabun",4600,"pcs"],["SBN015-D","SHAMPOO EMERON (Dus)","Sabun",96000,"dus"],["SBN016-S","SHAMPOO HEAD & SHOULDER (Satuan)","Sabun",8500,"pcs"],["SBN016-D","SHAMPOO HEAD & SHOULDER (Dus)","Sabun",370000,"dus"],["SBN017-S","SHAMPOO PANTENE (Satuan)","Sabun",8500,"pcs"],["SBN017-D","SHAMPOO PANTENE (Dus)","Sabun",370000,"dus"],["SBN018-S","SHAMPOO REJOICE (Satuan)","Sabun",8500,"pcs"],["SBN018-D","SHAMPOO REJOICE (Dus)","Sabun",370000,"dus"],["SBN019-S","SHAMPOO ZINC (Satuan)","Sabun",4600,"pcs"],["SBN019-D","SHAMPOO ZINC (Dus)","Sabun",96000,"dus"],["SBN020-S","SHINZUI BATANG (Satuan)","Sabun",51000,"pcs"],["SBN020-D","SHINZUI BATANG (Dus)","Sabun",610000,"dus"],["SBN021-S","SOKLIN BUBUK 1000 (Satuan)","Sabun",9500,"pcs"],["SBN021-D","SOKLIN BUBUK 1000 (Dus)","Sabun",56000,"dus"],["SBN022-S","SOKLIN BUBUK 5000 (Satuan)","Sabun",4300,"pcs"],["SBN022-D","SOKLIN BUBUK 5000 (Dus)","Sabun",102000,"dus"],["SBN023-S","SOKLIN CAIR LIQUID 500 (Satuan)","Sabun",4800,"pcs"],["SBN023-D","SOKLIN CAIR LIQUID 500 (Dus)","Sabun",47000,"dus"],["SBN024-S","SOKLIN CAIR LOQUID 1000 (Satuan)","Sabun",9500,"pcs"],["SBN024-D","SOKLIN CAIR LOQUID 1000 (Dus)","Sabun",92000,"dus"],["SBN025-S","SOKLIN LANTAI (Satuan)","Sabun",4500,"pcs"],["SBN025-D","SOKLIN LANTAI (Dus)","Sabun",104000,"dus"],["SBN028-D","EKONOMI 5000 (Dus)","Sabun",52000,"dus"]];
+const CAT_COLORS = { 'Minuman':'#38bdf8', 'Bumbu':'#f59e0b', 'Kopi & Susu':'#a78bfa', 'Mie':'#fb923c', 'Lain-lain':'#94a3b8', 'Obat':'#f43f5e', 'Rokok':'#facc15', 'Sabun':'#2dd4bf' };
+const CAT_ORDER = Object.keys(CAT_COLORS);
+const catOf = p => p.cat || 'Lainnya';
+const catColor = p => CAT_COLORS[catOf(p)] || '#94a3b8';
+const tracked = p => p.track !== false;
+const catIdx = p => { const i = CAT_ORDER.indexOf(catOf(p)); return i < 0 ? 99 : i; };
+const prodSort = (a, b) => catIdx(a) - catIdx(b) || String(a.code || '').localeCompare(String(b.code || ''), 'id', { numeric: true }) || a.name.localeCompare(b.name, 'id');
+
+/* ---------- penyimpanan lokal (IndexedDB) ---------- */
+let db = null, dbOK = false;
+function openDB() {
+  return new Promise((res, rej) => {
+    const r = indexedDB.open('toko123', 1);
+    r.onupgradeneeded = () => { const d = r.result; d.createObjectStore('kv'); d.createObjectStore('sales', { keyPath: 'no' }); };
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+}
+const reqP = r => new Promise((res, rej) => { r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
+const txDone = t => new Promise((res, rej) => { t.oncomplete = () => res(); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error); });
+const kvGet = k => reqP(db.transaction('kv').objectStore('kv').get(k));
+function kvPut(k, v) { if (!dbOK) return Promise.resolve(); const t = db.transaction('kv', 'readwrite'); t.objectStore('kv').put(v, k); return txDone(t); }
+const salesAll = () => reqP(db.transaction('sales').objectStore('sales').getAll());
+function salePut(s) { if (!dbOK) return Promise.resolve(); const t = db.transaction('sales', 'readwrite'); t.objectStore('sales').put(s); return txDone(t); }
+function salesPutMany(arr) { if (!dbOK) return Promise.resolve(); const t = db.transaction('sales', 'readwrite'); const st = t.objectStore('sales'); arr.forEach(s => st.put(s)); return txDone(t); }
+function salesReplace(arr) { if (!dbOK) return Promise.resolve(); const t = db.transaction('sales', 'readwrite'); const st = t.objectStore('sales'); st.clear(); arr.forEach(s => st.put(s)); return txDone(t); }
+function persist(p) { if (!dbOK) return; Promise.resolve(p).catch(e => alert('Gagal menyimpan data: ' + (e && e.message || e) + '\nSegera unduh backup.')); }
+
+const DEFAULT_SETTINGS = { name: 'TOKO 123', addr: 'Jl. Pasar Baru, Ruko I No. 234-236', foot: 'Terima kasih, selamat berbelanja kembali!', width: '58', low: 5, neg: '0', lastBackup: 0 };
+let products = [], sales = [], settings = Object.assign({}, DEFAULT_SETTINGS);
+let cart = [], editId = null, curReceipt = null, histLimit = 100, catFilter = '';
+let devId = 'X1';
+
+const prod = id => products.find(p => p.id === id);
+const saveProducts = () => persist(kvPut('products', products));
+const saveSettingsKV = () => persist(kvPut('settings', settings));
+
+/* ---------- lapisan sinkronisasi ---------- */
+let dirty = {}, dv = 0, settingsDirty = false;
+let syncing = false, again = false, syncState = 'sync', syncErr = '', syncErrNet = true, lastSync = 0;
+
+const saveDirty = () => persist(kvPut('dirty', { d: dirty, v: dv }));
+function markP(ids, t) {
+  (Array.isArray(ids) ? ids : [ids]).forEach(id => { dirty[id] = { t: t || 'u', v: ++dv }; });
+  saveDirty(); kick();
+}
+function markS() { settingsDirty = true; persist(kvPut('sdirty', true)); kick(); }
+const pending = () => Object.keys(dirty).length + sales.filter(s => s.synced !== true).length + (settingsDirty ? 1 : 0);
+
+const toProdRow = p => ({ id: p.id, code: String(p.code || ''), name: p.name, cat: p.cat || '', price: p.price, stock: p.stock, unit: p.unit || 'pcs', track: tracked(p) });
+const normProd = r => ({ id: r.id, code: r.code || '', name: r.name, cat: r.cat || '', price: +r.price, stock: +r.stock, unit: r.unit || 'pcs', track: !!r.track });
+const toSaleRow = s => ({ no: s.no, created_at: new Date(s.time).toISOString(), items: s.items, subtotal: s.subtotal, discount: s.discount, total: s.total, paid: s.paid, change_amount: s.change, method: s.method, is_void: !!s.void });
+const fromSaleRow = r => ({ no: r.no, time: Date.parse(r.created_at), items: r.items || [], subtotal: +r.subtotal, discount: +r.discount, total: +r.total, paid: +r.paid, change: +r.change_amount, method: r.method, void: !!r.is_void, synced: true });
+
+async function sb(path, o = {}) {
+  const h = { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY };
+  if (o.body !== undefined) h['Content-Type'] = 'application/json';
+  if (o.prefer) h.Prefer = o.prefer;
+  let r, timer;
+  try {
+    r = await Promise.race([
+      fetch(SB_URL + '/rest/v1/' + path, { method: o.method || 'GET', headers: h, body: o.body !== undefined ? JSON.stringify(o.body) : undefined }),
+      new Promise((_, rej) => { timer = setTimeout(() => { const e = new Error('Timeout'); e.name = 'AbortError'; rej(e); }, 25000); })
+    ]);
+  } finally { clearTimeout(timer); }
+  const t = await r.text();
+  if (!r.ok) {
+    let m = t;
+    try { const j = JSON.parse(t); m = (j.code ? j.code + ': ' : '') + (j.message || j.hint || t); } catch (e) {}
+    const err = new Error(r.status + ' ' + m); err.http = r.status; throw err;
+  }
+  return t ? JSON.parse(t) : null;
+}
+async function sbAll(table, query, order) {
+  let out = [], off = 0;
+  for (;;) {
+    const rows = await sb(table + '?select=*&' + (query ? query + '&' : '') + 'order=' + order + '&limit=1000&offset=' + off);
+    out = out.concat(rows);
+    if (rows.length < 1000) break;
+    off += 1000;
+  }
+  return out;
+}
+async function sbUpsert(table, rows, key) {
+  for (let i = 0; i < rows.length; i += 500)
+    await sb(table + '?on_conflict=' + key, { method: 'POST', body: rows.slice(i, i + 500), prefer: 'resolution=merge-duplicates,return=minimal' });
+}
+async function wipeRemote() {
+  if (!SYNC_ON) return;
+  await sb('pos_sales?no=not.is.null', { method: 'DELETE' });
+  await sb('pos_products?id=not.is.null', { method: 'DELETE' });
+}
+const isNet = e => !!e && (e.name === 'AbortError' || /failed to fetch|networkerror|network request|load failed/i.test(e.message || ''));
+function friendly(e) {
+  const m = (e && e.message) || String(e);
+  if (isNet(e)) return 'Tidak bisa terhubung ke server (internet putus?)';
+  if (/PGRST205|Could not find the table|does not exist|42P01/.test(m)) return 'Tabel belum dibuat di Supabase. Jalankan file supabase_pos.sql di SQL Editor Supabase.';
+  if (/row-level security|42501|401|403/.test(m)) return 'Izin ditolak oleh Supabase (RLS). Pastikan policy di supabase_pos.sql sudah dijalankan. Detail: ' + m;
+  return m;
+}
+
+async function flush() {
+  const snap = Object.assign({}, dirty);
+  const ups = [], dels = [];
+  for (const [id, d] of Object.entries(snap)) {
+    if (d.t === 'd') dels.push(id);
+    else { const p = prod(id); if (p) ups.push(p); }
+  }
+  if (ups.length) await sbUpsert('pos_products', ups.map(toProdRow), 'id');
+  for (let i = 0; i < dels.length; i += 50)
+    await sb('pos_products?id=in.(' + dels.slice(i, i + 50).map(encodeURIComponent).join(',') + ')', { method: 'DELETE' });
+  let ch = false;
+  for (const [id, d] of Object.entries(snap)) if (dirty[id] && dirty[id].v === d.v) { delete dirty[id]; ch = true; }
+  if (ch) saveDirty();
+
+  const us = sales.filter(s => s.synced !== true);
+  if (us.length) {
+    const snapV = us.map(s => [s, !!s.void]);
+    await sbUpsert('pos_sales', us.map(toSaleRow), 'no');
+    const done = [];
+    snapV.forEach(([s, v]) => { if (!!s.void === v) { s.synced = true; done.push(s); } });
+    if (done.length && dbOK) persist(salesPutMany(done));
+  }
+  if (settingsDirty) {
+    const { lastBackup, ...rest } = settings;
+    await sb('pos_settings?on_conflict=key', { method: 'POST', body: { key: 'app', value: rest }, prefer: 'resolution=merge-duplicates,return=minimal' });
+    settingsDirty = false; persist(kvPut('sdirty', false));
+  }
+}
+
+async function pull(full) {
+  const sq = full ? '' : 'created_at=gte.' + encodeURIComponent(new Date(Date.now() - 3 * 864e5).toISOString());
+  const [rpr, rsl, rst] = await Promise.all([
+    sbAll('pos_products', '', 'id'),
+    sbAll('pos_sales', sq, 'no'),
+    sb('pos_settings?select=value&key=eq.app')
+  ]);
+  const before = JSON.stringify(products) + sales.length + JSON.stringify(settings);
+  let needKick = false;
+
+  if (!rpr.length && products.length) {
+    products.forEach(p => { if (!dirty[p.id]) dirty[p.id] = { t: 'u', v: ++dv }; });
+    saveDirty(); needKick = true;
+  } else {
+    const remote = new Map(rpr.map(r => [r.id, normProd(r)]));
+    const out = [];
+    for (const [id, p] of remote) {
+      const d = dirty[id];
+      if (d && d.t === 'd') continue;
+      out.push(d && d.t === 'u' ? (prod(id) || p) : p);
+    }
+    for (const [id, d] of Object.entries(dirty)) if (d.t === 'u' && !remote.has(id)) { const lp = prod(id); if (lp) out.push(lp); }
+    out.sort(prodSort);
+    products = out;
+    saveProducts();
+  }
+
+  const lmap = new Map(sales.map(s => [s.no, s]));
+  const chg = [];
+  for (const r of rsl) {
+    const l = lmap.get(r.no);
+    if (l && l.synced !== true) continue;
+    const ns = fromSaleRow(r);
+    if (l && l.void === ns.void && l.total === ns.total) { if (!l.synced) { l.synced = true; chg.push(l); } continue; }
+    lmap.set(ns.no, ns); chg.push(ns);
+  }
+  if (chg.length) { sales = [...lmap.values()]; if (dbOK) persist(salesPutMany(chg)); }
+
+  if (rst.length) {
+    if (!settingsDirty) {
+      const lb = settings.lastBackup;
+      settings = Object.assign({}, DEFAULT_SETTINGS, rst[0].value || {}, { lastBackup: lb });
+      saveSettingsKV();
+    }
+  } else if (!settingsDirty) { settingsDirty = true; persist(kvPut('sdirty', true)); needKick = true; }
+
+  const after = JSON.stringify(products) + sales.length + JSON.stringify(settings);
+  if (needKick) kick();
+  return before !== after;
+}
+
+async function syncAll(full) {
+  if (!SYNC_ON) return;
+  if (syncing) { again = true; return; }
+  syncing = true; setPill('sync');
+  try {
+    await flush();
+    const changed = await pull(!!full);
+    syncErr = ''; syncErrNet = true; lastSync = Date.now();
+    setPill('ok');
+    if (changed || full) { try { refreshViews(); } catch (e) { console.error(e); } }
+  } catch (e) {
+    syncErr = friendly(e); syncErrNet = isNet(e);
+    setPill('off');
+  } finally { syncing = false; }
+  if (again) { again = false; setTimeout(() => syncAll(false), 300); }
+}
+function kick() {
+  if (!SYNC_ON) return;
+  clearTimeout(kick.h); kick.h = setTimeout(() => syncAll(false), 500);
+  setPill();
+}
+function setPill(st) {
+  if (st) syncState = st;
+  const n = pending();
+  const el = $('#syncPill');
+  if (el) {
+    el.className = 'pill ' + syncState;
+    el.querySelector('span').textContent = syncState === 'sync' ? 'Menyinkron…' : syncState === 'ok' ? (n ? n + ' menunggu' : 'Tersinkron') : 'Offline' + (n ? ' · ' + n + ' menunggu' : '');
+  }
+  const bar = $('#syncBar');
+  if (bar) {
+    if (syncState === 'off' && syncErr && !syncErrNet) { bar.style.display = ''; bar.textContent = 'Sinkronisasi Supabase gagal: ' + syncErr; }
+    else bar.style.display = 'none';
+  }
+  const si = $('#syncInfo');
+  if (si) {
+    let t = 'Status: ' + (syncState === 'ok' ? 'tersambung' : syncState === 'sync' ? 'sedang menyinkron' : 'tidak tersambung') + '. ';
+    if (lastSync) t += 'Sinkron terakhir: ' + fmtTime(lastSync) + '. ';
+    t += n ? n + ' perubahan menunggu dikirim. ' : 'Semua perubahan sudah terkirim. ';
+    if (syncErr) t += 'Keterangan: ' + syncErr;
+    si.textContent = t;
+  }
+}
+function refreshViews() {
+  cart = cart.filter(c => prod(c.id));
+  const t = document.querySelector('.tab.on').id;
+  applyHeader();
+  if (t === 'kasir') { renderGrid(); if (!document.activeElement || !document.activeElement.closest('#cartBody')) renderCart(); }
+  if (t === 'produk') renderProducts();
+  if (t === 'laporan') renderReport();
+  if (t === 'setting') fillSettings();
+  backupBar();
+}
+
+/* ================= UI ================= */
+function toast(m) { const t = $('#toast'); t.textContent = m; t.style.display = 'block'; clearTimeout(toast.h); toast.h = setTimeout(() => t.style.display = 'none', 2600); }
+
+function goTab(t) {
+  document.querySelectorAll('nav button').forEach(x => x.classList.toggle('on', x.dataset.t === t));
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x.id === t));
+  if (t === 'kasir') { renderGrid(); $('#q').focus(); }
+  if (t === 'produk') renderProducts();
+  if (t === 'laporan') renderReport();
+  if (t === 'setting') fillSettings();
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => goTab(b.dataset.t));
+
+function applyHeader() {
+  $('#hName').textContent = settings.name;
+  $('#hAddr').textContent = settings.addr;
+  document.title = 'Kasir ' + settings.name;
+}
+function backupBar() {
+  const bar = $('#bkBar'), last = settings.lastBackup || 0;
+  const days = last ? (Date.now() - last) / 86400000 : Infinity;
+  if (sales.length && days > 7) {
+    bar.style.display = '';
+    bar.textContent = last ? 'Backup file terakhir ' + Math.floor(days) + ' hari lalu. Klik di sini untuk backup sekarang.' : 'Belum pernah unduh backup file. Klik di sini untuk backup sekarang.';
+  } else bar.style.display = 'none';
+}
+
+function allCats() { return [...new Set(products.map(catOf))].sort((a, b) => a.localeCompare(b, 'id')); }
+
+function renderChips() {
+  const cats = allCats();
+  if (catFilter && !cats.includes(catFilter)) catFilter = '';
+  $('#chips').innerHTML = ['', ...cats].map(c => `<button class="chip ${c === catFilter ? 'on' : ''}" data-c="${esc(c)}">${c ? esc(c) : 'Semua'}</button>`).join('');
+}
+$('#chips').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  catFilter = b.dataset.c; renderGrid();
+});
+
+const GRID_MAX = 120;
+function renderGrid() {
+  renderChips();
+  const q = $('#q').value.trim().toLowerCase();
+  const all = products.filter(p => (!catFilter || catOf(p) === catFilter) && (!q || p.name.toLowerCase().includes(q) || (p.code || '').toLowerCase().includes(q))).sort(prodSort);
+  const list = all.slice(0, GRID_MAX);
+  let html = list.map(p => {
+    const t = tracked(p);
+    const cls = !t ? '' : (p.stock <= 0 ? 'out' : (p.stock <= num(settings.low) ? 'low' : ''));
+    const st = t ? 'Stok: ' + p.stock + ' ' + esc(p.unit) : esc(p.unit);
+    return `<button class="pc ${cls}" style="--c:${catColor(p)}" onclick="addCart('${p.id}')"><span class="cat">${esc(catOf(p))}</span><b>${esc(p.name)}</b><span class="pr">${rp(p.price)}</span><div class="st">${st}</div></button>`;
+  }).join('');
+  if (all.length > GRID_MAX) html += `<div class="more">Menampilkan ${GRID_MAX} dari ${all.length} barang. Ketik nama atau pilih kategori untuk mempersempit.</div>`;
+  $('#grid').innerHTML = html || `<div class="empty" style="grid-column:1/-1">${products.length ? 'Barang tidak ditemukan.' : 'Belum ada barang. Impor katalog di tab Produk &amp; Stok.'}</div>`;
+}
+$('#q').addEventListener('input', renderGrid);
+$('#q').addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const q = $('#q').value.trim().toLowerCase();
+  if (!q) return;
+  let p = products.find(x => (x.code || '').toLowerCase() === q);
+  if (!p) { const m = products.filter(x => x.name.toLowerCase().includes(q)); if (m.length === 1) p = m[0]; }
+  if (p) { addCart(p.id); $('#q').value = ''; renderGrid(); } else toast('Barang tidak ditemukan / hasil lebih dari satu');
+});
+
+function addCart(id) {
+  const p = prod(id); if (!p) return;
+  const c = cart.find(x => x.id === id);
+  const next = (c ? c.qty : 0) + 1;
+  if (settings.neg !== '1' && tracked(p) && next > p.stock) { toast('Stok ' + p.name + ' tidak cukup'); return; }
+  if (c) c.qty = next; else cart.push({ id, qty: 1 });
+  renderCart();
+}
+function chg(i, d) {
+  const c = cart[i], p = prod(c.id);
+  const nq = r3(c.qty + d);
+  if (nq <= 0) cart.splice(i, 1);
+  else if (settings.neg !== '1' && tracked(p) && nq > p.stock) { toast('Stok tidak cukup'); return; }
+  else c.qty = nq;
+  renderCart();
+}
+function setQty(i, v) {
+  const c = cart[i], p = prod(c.id); const q = r3(num(v));
+  if (q <= 0) cart.splice(i, 1);
+  else if (settings.neg !== '1' && tracked(p) && q > p.stock) toast('Stok tersedia: ' + p.stock);
+  else c.qty = q;
+  renderCart();
+}
+function rm(i) { cart.splice(i, 1); renderCart(); }
+function clearCart() { cart = []; $('#disc').value = ''; $('#paid').value = ''; renderCart(); }
+
+function calc() {
+  const subtotal = cart.reduce((s, c) => s + prod(c.id).price * c.qty, 0);
+  const disc = Math.min(Math.max(0, num($('#disc').value)), subtotal);
+  return { subtotal, disc, total: subtotal - disc };
+}
+function renderCart() {
+  const tb = $('#cartBody');
+  tb.innerHTML = cart.length ? cart.map((c, i) => {
+    const p = prod(c.id);
+    return `<tr><td>${esc(p.name)}<div class="sub">${rp(p.price)} / ${esc(p.unit)}</div></td>
+      <td><div class="qty"><button onclick="chg(${i},-1)">−</button><input type="number" step="any" min="0" value="${c.qty}" onchange="setQty(${i},this.value)"><button onclick="chg(${i},1)">+</button></div></td>
+      <td class="r">${rp(p.price * c.qty)}</td><td><button class="x" onclick="rm(${i})" title="Hapus">✕</button></td></tr>`;
+  }).join('') : '<tr><td colspan="4" class="empty">Keranjang kosong. Pilih barang atau scan barcode.</td></tr>';
+  renderTotals();
+}
+function renderTotals() {
+  const { subtotal, total } = calc();
+  $('#tSub').textContent = rp(subtotal);
+  $('#tTot').textContent = rp(total);
+  const cash = $('#method').value === 'Tunai';
+  $('#paidWrap').style.display = cash ? '' : 'none';
+  $('#quick').style.display = cash ? '' : 'none';
+  const paid = cash ? num($('#paid').value) : total;
+  const chgv = paid - total;
+  $('#tChg').textContent = rp(Math.max(0, chgv));
+  $('#tChg').style.color = chgv < 0 && cart.length && cash ? 'var(--red)' : '';
+  $('#btnPay').disabled = !cart.length || (cash && paid < total);
+  const amounts = [5000, 10000, 20000, 50000, 100000];
+  $('#quick').innerHTML = `<button class="btn sec" onclick="setPaid(${total})">Uang pas</button>` + amounts.map(a => `<button class="btn sec" onclick="setPaid(${a})">${n0(a)}</button>`).join('');
+}
+function setPaid(v) { $('#paid').value = v; renderTotals(); }
+$('#disc').addEventListener('input', renderTotals);
+$('#paid').addEventListener('input', renderTotals);
+$('#method').addEventListener('change', renderTotals);
+$('#paid').addEventListener('keydown', e => { if (e.key === 'Enter') pay(); });
+
+function nextNo() {
+  const d = 'TK' + ymd(Date.now()).replace(/-/g, '') + '-' + devId + '-';
+  let max = 0;
+  for (const s of sales) if (s.no.startsWith(d)) max = Math.max(max, parseInt(s.no.slice(d.length)) || 0);
+  return d + String(max + 1).padStart(4, '0');
+}
+function pay() {
+  if (!cart.length) return;
+  const { subtotal, disc, total } = calc();
+  const method = $('#method').value;
+  const paid = method === 'Tunai' ? num($('#paid').value) : total;
+  if (paid < total) { toast('Uang diterima kurang'); return; }
+  for (const c of cart) { const p = prod(c.id); if (settings.neg !== '1' && tracked(p) && c.qty > p.stock) { toast('Stok ' + p.name + ' tidak cukup'); return; } }
+  const touched = [];
+  const items = cart.map(c => {
+    const p = prod(c.id);
+    if (tracked(p)) { p.stock = r3(p.stock - c.qty); touched.push(p.id); }
+    return { id: p.id, code: p.code, name: p.name, price: p.price, qty: c.qty, unit: p.unit };
+  });
+  const sale = { no: nextNo(), time: Date.now(), items, subtotal, discount: disc, total, paid, change: paid - total, method, void: false, synced: false };
+  sales.push(sale); persist(salePut(sale)); saveProducts();
+  if (touched.length) markP(touched); else kick();
+  clearCart(); renderGrid(); backupBar();
+  showReceipt(sale);
+}
+
+function printHTML(html, kind) {
+  $('#pageStyle').textContent = kind === 'struk'
+    ? '@page{size:' + (settings.width === '80' ? '80' : '58') + 'mm auto;margin:2mm}'
+    : '@page{size:A4;margin:12mm}';
+  $('#printArea').innerHTML = html;
+  setTimeout(() => window.print(), 50);
+}
+window.addEventListener('afterprint', () => { $('#printArea').innerHTML = ''; });
+
+function receiptHTML(s) {
+  const w = settings.width === '80' ? '76mm' : '54mm';
+  const lines = s.items.map(i => `<div>${esc(i.name)}</div><div class="rl"><span>${i.qty} ${esc(i.unit || '')} x ${n0(i.price)}</span><span>${n0(i.price * i.qty)}</span></div>`).join('');
+  return `<div class="receipt" style="width:${w}">
+    <div class="c"><b style="font-size:15px">${esc(settings.name)}</b><br>${esc(settings.addr)}</div><hr>
+    <div>No: ${esc(s.no)}</div>
+    <div>${fmtTime(s.time)}</div>${s.void ? '<div><b>*** DIBATALKAN ***</b></div>' : ''}<hr>
+    ${lines}<hr>
+    <div class="rl"><span>Subtotal</span><span>${n0(s.subtotal)}</span></div>
+    ${s.discount ? `<div class="rl"><span>Diskon</span><span>-${n0(s.discount)}</span></div>` : ''}
+    <div class="rl"><b>TOTAL</b><b>${n0(s.total)}</b></div>
+    <div class="rl"><span>Bayar (${esc(s.method)})</span><span>${n0(s.paid)}</span></div>
+    <div class="rl"><span>Kembali</span><span>${n0(s.change)}</span></div><hr>
+    <div class="c">${esc(settings.foot)}</div></div>`;
+}
+function showReceipt(s) { curReceipt = s; $('#modalBody').innerHTML = receiptHTML(s); $('#modal').classList.add('on'); }
+function printReceiptNow() { if (curReceipt) printHTML(receiptHTML(curReceipt), 'struk'); }
+function closeModal() { $('#modal').classList.remove('on'); if ($('#kasir').classList.contains('on')) $('#q').focus(); }
+
+function renderProducts() {
+  const q = $('#pSearch').value.trim().toLowerCase();
+  const cats = allCats();
+  const sel = $('#pCatSel'), cur = sel.value;
+  sel.innerHTML = '<option value="">Semua kategori</option>' + cats.map(c => `<option>${esc(c)}</option>`).join('');
+  sel.value = cats.includes(cur) ? cur : '';
+  $('#catList').innerHTML = cats.map(c => `<option value="${esc(c)}">`).join('');
+  const cf = sel.value;
+  const list = products.filter(p => (!cf || catOf(p) === cf) && (!q || p.name.toLowerCase().includes(q) || (p.code || '').toLowerCase().includes(q)))
+    .sort((a, b) => catOf(a).localeCompare(catOf(b), 'id') || a.name.localeCompare(b.name, 'id'));
+  const low = products.filter(p => tracked(p) && p.stock <= num(settings.low)).length;
+  $('#pInfo').textContent = list.length + ' dari ' + products.length + ' barang' + (low ? ' · ' + low + ' stok menipis/habis' : '');
+  $('#pBody').innerHTML = list.length ? list.map(p => `<tr>
+    <td>${esc(p.code)}</td><td>${esc(p.name)}</td><td><span class="tag c">${esc(catOf(p))}</span></td><td class="r">${rp(p.price)}</td>
+    <td class="r">${tracked(p) ? p.stock + ' ' + esc(p.unit) + ' ' + (p.stock <= num(settings.low) ? '<span class="tag">' + (p.stock <= 0 ? 'habis' : 'menipis') + '</span>' : '') : '<span class="sub">tanpa stok</span>'}</td>
+    <td class="r" style="white-space:nowrap"><button class="btn sec sm" onclick="addStock('${p.id}')">+ Stok</button> <button class="btn sec sm" onclick="editProduct('${p.id}')">Edit</button> <button class="btn sec sm" style="color:var(--red)" onclick="delProduct('${p.id}')">Hapus</button></td></tr>`).join('')
+    : `<tr><td colspan="6" class="empty">${products.length ? 'Barang tidak ditemukan.' : 'Belum ada barang. Isi formulir di atas, atau klik "Impor dari barang.sql".'}</td></tr>`;
+}
+$('#pSearch').addEventListener('input', renderProducts);
+$('#pCatSel').addEventListener('change', renderProducts);
+
+function catalogProduct(c) { return { id: 'c_' + c[0], code: c[0], name: c[1], cat: c[2], price: c[3], stock: 0, unit: c[4], track: false }; }
+function importCatalog(ask) {
+  if (ask && !confirm('Impor ' + CATALOG.length + ' barang dari database barang.sql?\nBarang dengan kode yang sama akan diperbarui nama, kategori, dan harganya (stok tidak diubah). Barang lain tidak dihapus.')) return;
+  const byCode = new Map(products.map(p => [p.code, p]));
+  let add = 0, upd = 0;
+  const touched = [];
+  CATALOG.forEach(c => {
+    const p = byCode.get(c[0]);
+    if (p) { p.name = c[1]; p.cat = c[2]; p.price = c[3]; p.unit = c[4]; upd++; touched.push(p.id); }
+    else { const np = catalogProduct(c); products.push(np); byCode.set(np.code, np); add++; touched.push(np.id); }
+  });
+  products.sort(prodSort);
+  saveProducts(); markP(touched); renderProducts(); renderGrid(); renderCart(); fillSettings();
+  toast(add + ' barang baru, ' + upd + ' diperbarui');
+}
+function resetForm() {
+  editId = null; $('#pfTitle').textContent = 'Tambah Barang Baru'; $('#pSave').textContent = 'Simpan Barang';
+  ['pCode', 'pName', 'pCat', 'pPrice', 'pStock', 'pUnit'].forEach(i => $('#' + i).value = '');
+  $('#pTrack').value = '1';
+}
+function editProduct(id) {
+  const p = prod(id); editId = id;
+  $('#pfTitle').textContent = 'Edit Barang: ' + p.name; $('#pSave').textContent = 'Simpan Perubahan';
+  $('#pCode').value = p.code; $('#pName').value = p.name; $('#pCat').value = p.cat || ''; $('#pPrice').value = p.price; $('#pStock').value = p.stock; $('#pUnit').value = p.unit;
+  $('#pTrack').value = tracked(p) ? '1' : '0';
+  window.scrollTo({ top: 0, behavior: 'smooth' }); $('#pName').focus();
+}
+function saveProduct() {
+  const name = $('#pName').value.trim(), price = num($('#pPrice').value);
+  let code = $('#pCode').value.trim();
+  if (!name) { toast('Nama barang wajib diisi'); return; }
+  if ($('#pPrice').value === '' || price < 0) { toast('Harga jual wajib diisi'); return; }
+  if (code && products.some(p => p.code === code && p.id !== editId)) { toast('Kode sudah dipakai barang lain'); return; }
+  if (!code) { let n = products.length + 1001; while (products.some(p => p.code === String(n))) n++; code = String(n); }
+  const track = $('#pTrack').value === '1';
+  const data = { code, name, cat: $('#pCat').value.trim(), price, stock: track ? r3(num($('#pStock').value)) : 0, unit: $('#pUnit').value.trim() || 'pcs', track };
+  const wasEdit = !!editId;
+  let pid = editId;
+  if (editId) Object.assign(prod(editId), data); else { pid = uid(); products.push(Object.assign({ id: pid }, data)); }
+  products.sort(prodSort);
+  saveProducts(); markP(pid); resetForm(); renderProducts(); renderGrid(); renderCart();
+  toast(wasEdit ? 'Perubahan tersimpan' : 'Barang ditambahkan');
+}
+function addStock(id) {
+  const p = prod(id);
+  if (!tracked(p)) { toast('Stok barang ini tidak dilacak. Klik Edit, lalu ubah "Lacak stok" menjadi Ya.'); return; }
+  const v = prompt('Tambah stok "' + p.name + '" berapa ' + p.unit + '?\n(stok sekarang: ' + p.stock + ')');
+  if (v === null) return;
+  const q = r3(num(v));
+  if (q <= 0) { toast('Jumlah tidak valid'); return; }
+  p.stock = r3(p.stock + q); saveProducts(); markP(id); renderProducts(); renderGrid();
+  toast('Stok ' + p.name + ' sekarang ' + p.stock + ' ' + p.unit);
+}
+function delProduct(id) {
+  const p = prod(id);
+  if (!confirm('Hapus "' + p.name + '"? Riwayat transaksi lama tetap tersimpan.')) return;
+  products = products.filter(x => x.id !== id); cart = cart.filter(c => c.id !== id);
+  if (editId === id) resetForm();
+  saveProducts(); markP(id, 'd'); renderProducts(); renderGrid(); renderCart();
+}
+
+function setRange(pf, kind) {
+  const now = Date.now(), d = new Date();
+  let f = '', t = '';
+  if (kind === 'today') f = t = ymd(now);
+  else if (kind === 'month') { f = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-01'; t = ymd(now); }
+  $('#' + pf + 'From').value = f; $('#' + pf + 'To').value = t;
+  if (pf === 'h') { histLimit = 100; renderReport(); }
+}
+function rangeOf(pf) {
+  const f = $('#' + pf + 'From').value, t = $('#' + pf + 'To').value;
+  return [f ? new Date(f + 'T00:00:00').getTime() : 0, t ? new Date(t + 'T23:59:59.999').getTime() : Infinity];
+}
+function periodLabel(pf) {
+  const f = $('#' + pf + 'From').value, t = $('#' + pf + 'To').value;
+  if (!f && !t) return 'Semua waktu';
+  const fx = f ? fmtDate(new Date(f + 'T00:00:00')) : 'awal', tx = t ? fmtDate(new Date(t + 'T00:00:00')) : 'sekarang';
+  return f === t ? fx : fx + ' s.d. ' + tx;
+}
+function summarize(list) {
+  const ok = list.filter(s => !s.void);
+  const byMethod = {}, agg = {};
+  let omzet = 0, qty = 0;
+  ok.forEach(s => {
+    omzet += s.total;
+    byMethod[s.method] = (byMethod[s.method] || 0) + s.total;
+    s.items.forEach(i => {
+      qty += i.qty;
+      const a = agg[i.name] || (agg[i.name] = { q: 0, v: 0, u: i.unit });
+      a.q += i.qty; a.v += i.qty * i.price;
+    });
+  });
+  return { ok, omzet, qty, byMethod, agg, voided: list.length - ok.length };
+}
+
+function histList() {
+  const [a, b] = rangeOf('h'), q = $('#hSearch').value.trim().toLowerCase();
+  return sales.filter(s => s.time >= a && s.time <= b && (!q || s.no.toLowerCase().includes(q) || s.items.some(i => i.name.toLowerCase().includes(q))))
+    .sort((x, y) => y.time - x.time);
+}
+function renderReport() {
+  const list = histList(), sm = summarize(list);
+  $('#stats').innerHTML = `<div class="stat"><span>Jumlah transaksi</span><b>${sm.ok.length}</b></div>
+    <div class="stat"><span>Total penjualan</span><b>${rp(sm.omzet)}</b></div>
+    <div class="stat"><span>Rata-rata / transaksi</span><b>${rp(sm.ok.length ? sm.omzet / sm.ok.length : 0)}</b></div>
+    <div class="stat"><span>Barang terjual</span><b>${r3(sm.qty)}</b></div>`;
+  const top = Object.entries(sm.agg).sort((a, b) => b[1].v - a[1].v).slice(0, 5);
+  $('#top').innerHTML = top.length ? top.map(([n, a], i) => `${i + 1}. ${esc(n)} — ${r3(a.q)} ${esc(a.u || '')} (${rp(a.v)})`).join('<br>') : 'Belum ada data.';
+  const shown = list.slice(0, histLimit);
+  $('#sBody').innerHTML = shown.length ? shown.map(s => `<tr>
+    <td>${esc(s.no)} ${s.void ? '<span class="tag v">batal</span>' : ''}</td><td>${fmtTime(s.time)}</td><td>${esc(s.method)}</td>
+    <td class="r">${rp(s.total)}</td>
+    <td class="r" style="white-space:nowrap"><button class="btn sec sm" onclick="viewSale('${s.no}')">Lihat/Cetak</button>
+    ${s.void ? '' : ` <button class="btn sec sm" style="color:var(--red)" onclick="voidSale('${s.no}')">Batalkan</button>`}</td></tr>`).join('')
+    : '<tr><td colspan="5" class="empty">Tidak ada transaksi pada filter ini.</td></tr>';
+  const more = list.length - shown.length;
+  $('#moreBtn').style.display = more > 0 ? '' : 'none';
+  $('#moreBtn').textContent = 'Tampilkan 100 lagi (sisa ' + more + ')';
+}
+['hFrom', 'hTo'].forEach(id => $('#' + id).addEventListener('change', () => { histLimit = 100; renderReport(); }));
+$('#hSearch').addEventListener('input', () => { histLimit = 100; renderReport(); });
+function viewSale(no) { showReceipt(sales.find(s => s.no === no)); }
+function voidSale(no) {
+  const s = sales.find(x => x.no === no);
+  if (!confirm('Batalkan transaksi ' + no + '? Stok barang yang dilacak akan dikembalikan. Transaksi tetap tercatat di riwayat dengan tanda "batal".')) return;
+  const touched = [];
+  s.items.forEach(i => { const p = prod(i.id); if (p && tracked(p)) { p.stock = r3(p.stock + i.qty); touched.push(p.id); } });
+  s.void = true; s.synced = false;
+  persist(salePut(s)); saveProducts();
+  if (touched.length) markP(touched); else kick();
+  renderReport(); renderGrid(); toast('Transaksi dibatalkan, stok dikembalikan');
+}
+function download(name, text, type) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text], { type }));
+  a.download = name; document.body.appendChild(a); a.click(); a.remove();
+}
+function exportCSV() {
+  const q = v => '"' + String(v).replace(/"/g, '""') + '"';
+  const rows = [['No Struk', 'Waktu', 'Metode', 'Barang', 'Subtotal', 'Diskon', 'Total', 'Status']];
+  histList().forEach(s => rows.push([s.no, fmtTime(s.time), s.method, s.items.map(i => i.name + ' x' + i.qty).join('; '), s.subtotal, s.discount, s.total, s.void ? 'BATAL' : 'OK']));
+  download('riwayat-penjualan-' + ymd(Date.now()) + '.csv', '\ufeff' + rows.map(r => r.map(q).join(';')).join('\r\n'), 'text/csv');
+}
+
+function printLast() {
+  if (!sales.length) { toast('Belum ada transaksi'); return; }
+  const s = sales.reduce((a, b) => (b.time > a.time ? b : a));
+  curReceipt = s; printHTML(receiptHTML(s), 'struk');
+}
+function repHead(title, sub) {
+  return `<h1>${esc(settings.name)}</h1><div class="meta">${esc(settings.addr)}</div>
+    <h2 style="font-size:14pt;margin-top:10px">${esc(title)}</h2>${sub ? `<div class="meta">${sub}</div>` : ''}
+    <div class="meta">Dicetak: ${fmtTime(Date.now())}</div>`;
+}
+function printReport() {
+  const [a, b] = rangeOf('c');
+  const list = sales.filter(s => s.time >= a && s.time <= b).sort((x, y) => x.time - y.time);
+  if (!list.length) { toast('Tidak ada transaksi pada rentang tanggal ini'); return; }
+  const sm = summarize(list);
+  const meth = Object.entries(sm.byMethod).map(([m, v]) => `<tr><td>${esc(m)}</td><td class="r">${rp(v)}</td></tr>`).join('');
+  const items = Object.entries(sm.agg).sort((x, y) => y[1].v - x[1].v)
+    .map(([n, v], i) => `<tr><td>${i + 1}</td><td>${esc(n)}</td><td class="r">${r3(v.q)} ${esc(v.u || '')}</td><td class="r">${rp(v.v)}</td></tr>`).join('');
+  const trx = list.map(s => `<tr><td>${esc(s.no)}</td><td>${fmtTime(s.time)}</td><td>${esc(s.method)}</td>
+    <td>${s.items.map(i => esc(i.name) + ' x' + i.qty).join(', ')}</td><td class="r">${s.void ? 'BATAL' : n0(s.total)}</td></tr>`).join('');
+  const html = `<div class="rep">${repHead('Laporan Penjualan', 'Periode: ' + periodLabel('c'))}
+    <table class="sum" style="margin-top:8px"><tr><td>Jumlah transaksi</td><td><b>${sm.ok.length}</b></td></tr>
+    <tr><td>Total penjualan</td><td><b>${rp(sm.omzet)}</b></td></tr>
+    <tr><td>Barang terjual</td><td><b>${r3(sm.qty)}</b></td></tr>
+    ${sm.voided ? `<tr><td>Transaksi dibatalkan</td><td><b>${sm.voided}</b> (tidak dihitung)</td></tr>` : ''}</table>
+    <h2>Rekap per metode bayar</h2><table><tr><th>Metode</th><th class="r">Total</th></tr>${meth}</table>
+    <h2>Rekap per barang</h2><table><tr><th>No</th><th>Barang</th><th class="r">Terjual</th><th class="r">Nilai</th></tr>${items}</table>
+    <h2>Daftar transaksi</h2><table><tr><th>No. Struk</th><th>Waktu</th><th>Metode</th><th>Barang</th><th class="r">Total (Rp)</th></tr>${trx}</table></div>`;
+  printHTML(html, 'laporan');
+}
+function printPrices() {
+  if (!products.length) { toast('Belum ada barang'); return; }
+  const rows = products.slice().sort((x, y) => catOf(x).localeCompare(catOf(y), 'id') || x.name.localeCompare(y.name, 'id'))
+    .map((p, i) => `<tr><td>${i + 1}</td><td>${esc(p.code)}</td><td>${esc(p.name)}</td><td>${esc(catOf(p))}</td><td>${esc(p.unit)}</td><td class="r">${n0(p.price)}</td></tr>`).join('');
+  printHTML(`<div class="rep">${repHead('Daftar Harga Barang')}<table><tr><th>No</th><th>Kode</th><th>Nama barang</th><th>Kategori</th><th>Satuan</th><th class="r">Harga (Rp)</th></tr>${rows}</table></div>`, 'laporan');
+}
+function printStock(onlyLow) {
+  let list = products.filter(tracked).sort((x, y) => x.name.localeCompare(y.name, 'id'));
+  if (onlyLow) list = list.filter(p => p.stock <= num(settings.low));
+  if (!list.length) { toast(onlyLow ? 'Tidak ada stok yang menipis' : 'Belum ada barang dengan stok dilacak'); return; }
+  const rows = list.map((p, i) => `<tr><td>${i + 1}</td><td>${esc(p.code)}</td><td>${esc(p.name)}</td><td class="r">${p.stock} ${esc(p.unit)}</td><td>${p.stock <= 0 ? 'HABIS' : (p.stock <= num(settings.low) ? 'Menipis' : '')}</td></tr>`).join('');
+  printHTML(`<div class="rep">${repHead(onlyLow ? 'Daftar Stok Menipis / Habis' : 'Daftar Stok Barang', onlyLow ? 'Batas menipis: ' + settings.low : '')}<table><tr><th>No</th><th>Kode</th><th>Nama barang</th><th class="r">Stok</th><th>Ket.</th></tr>${rows}</table></div>`, 'laporan');
+}
+
+async function fillSettings() {
+  $('#sName').value = settings.name; $('#sAddr').value = settings.addr; $('#sFoot').value = settings.foot;
+  $('#sWidth').value = settings.width; $('#sLow').value = settings.low; $('#sNeg').value = settings.neg;
+  $('#catInfo').textContent = CATALOG.length + ' item dari ' + new Set(CATALOG.map(c => c[2])).size + ' kategori';
+  let info = 'Tersimpan: ' + products.length + ' barang, ' + sales.length + ' transaksi. Backup file terakhir: ' + (settings.lastBackup ? fmtTime(settings.lastBackup) : 'belum pernah') + '.';
+  try { if (navigator.storage && navigator.storage.estimate) { const e = await navigator.storage.estimate(); info += ' Ruang lokal terpakai: ' + (e.usage / 1048576).toFixed(2) + ' MB.'; } } catch (e) {}
+  $('#dataInfo').textContent = info;
+  setPill();
+}
+function saveSettings() {
+  Object.assign(settings, { name: $('#sName').value.trim() || 'TOKO 123', addr: $('#sAddr').value.trim(), foot: $('#sFoot').value.trim(), width: $('#sWidth').value, low: num($('#sLow').value), neg: $('#sNeg').value });
+  saveSettingsKV(); markS(); applyHeader(); toast('Pengaturan tersimpan');
+}
+function backup() {
+  download('backup-toko123-' + ymd(Date.now()) + '.json', JSON.stringify({ products, sales, settings }), 'application/json');
+  settings.lastBackup = Date.now(); saveSettingsKV(); backupBar(); fillSettings();
+}
+$('#restoreFile').addEventListener('change', e => {
+  const inp = e.target, f = inp.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = async () => {
+    let d;
+    try { d = JSON.parse(rd.result); if (!Array.isArray(d.products) || !Array.isArray(d.sales)) throw 0; }
+    catch (err) { alert('File backup tidak valid.'); inp.value = ''; return; }
+    if (!confirm('Data saat ini (termasuk yang ada di server Supabase) akan DIGANTI dengan isi file backup. Lanjutkan?')) { inp.value = ''; return; }
+    try { await wipeRemote(); }
+    catch (err) { alert('Gagal mengganti data di server: ' + friendly(err) + '\nPemulihan dibatalkan.'); inp.value = ''; return; }
+    products = d.products; sales = d.sales.map(s => Object.assign({}, s, { synced: false }));
+    settings = Object.assign({}, DEFAULT_SETTINGS, d.settings || {}); cart = [];
+    products.sort(prodSort);
+    dirty = {}; products.forEach(p => { dirty[p.id] = { t: 'u', v: ++dv }; }); saveDirty();
+    settingsDirty = true; persist(kvPut('sdirty', true));
+    saveProducts(); persist(salesReplace(sales)); saveSettingsKV();
+    applyHeader(); fillSettings(); renderGrid(); renderCart(); backupBar();
+    toast('Data dipulihkan, mengirim ke server…'); kick(); inp.value = '';
+  };
+  rd.readAsText(f);
+});
+async function resetAll() {
+  if (!confirm('HAPUS SEMUA data barang dan riwayat transaksi (termasuk di server Supabase)? Tidak bisa dikembalikan kecuali ada backup.')) return;
+  if (!confirm('Yakin? Ini penghapusan permanen.')) return;
+  try { await wipeRemote(); }
+  catch (err) { alert('Gagal menghapus data di server: ' + friendly(err) + '\nPenghapusan dibatalkan.'); return; }
+  products = []; sales = []; cart = []; dirty = {}; saveDirty();
+  saveProducts(); persist(salesReplace([])); renderGrid(); renderCart(); fillSettings(); backupBar(); toast('Semua data dihapus');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'F2') { e.preventDefault(); goTab('kasir'); $('#q').focus(); }
+  if (e.key === 'F9') { e.preventDefault(); goTab('kasir'); $('#paid').focus(); }
+  if (e.key === 'Escape') closeModal();
+});
+
+async function init() {
+  const newDev = () => Math.random().toString(36).slice(2, 4).toUpperCase().padEnd(2, 'X');
+  try {
+    db = await openDB(); dbOK = true;
+    devId = await kvGet('dev');
+    if (!devId) { devId = newDev(); await kvPut('dev', devId); }
+    const dd = await kvGet('dirty');
+    if (dd) { dirty = dd.d || {}; dv = dd.v || 0; }
+    settingsDirty = !!(await kvGet('sdirty'));
+    const p = await kvGet('products');
+    if (p === undefined) {
+      let lp = null, ls = null, lset = null;
+      try { lp = JSON.parse(localStorage.getItem('t123_products')); ls = JSON.parse(localStorage.getItem('t123_sales')); lset = JSON.parse(localStorage.getItem('t123_settings')); } catch (e) {}
+      products = Array.isArray(lp) ? lp : [];
+      sales = Array.isArray(ls) ? ls : [];
+      settings = Object.assign({}, DEFAULT_SETTINGS, lset || {});
+      if (!products.length) products = CATALOG.map(catalogProduct);
+      products.sort(prodSort);
+      await kvPut('products', products); await kvPut('settings', settings);
+      if (sales.length) await salesReplace(sales);
+    } else {
+      products = p;
+      settings = Object.assign({}, DEFAULT_SETTINGS, await kvGet('settings') || {});
+      sales = await salesAll();
+    }
+    if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+  } catch (e) {
+    devId = newDev();
+    products = CATALOG.map(catalogProduct).sort(prodSort);
+    alert('Browser ini tidak bisa menyimpan data permanen di komputer (' + (e && e.message || e) + '). Data tetap dikirim ke Supabase, tetapi gunakan Google Chrome atau Microsoft Edge, dan jangan pakai mode Incognito/Private.');
+  }
+  applyHeader(); renderGrid(); renderCart(); setRange('h', 'all'); setRange('c', 'today'); backupBar(); $('#q').focus();
+  setPill(SYNC_ON ? 'sync' : 'off');
+  if (SYNC_ON) initialSync();
+}
+async function initialSync() {
+  try {
+    const head = await sb('pos_products?select=id&limit=1');
+    if (!head.length && products.length) {
+      products.forEach(p => { if (!dirty[p.id]) dirty[p.id] = { t: 'u', v: ++dv }; });
+      saveDirty();
+      settingsDirty = true; persist(kvPut('sdirty', true));
+    }
+  } catch (e) {
+    syncErr = friendly(e); syncErrNet = isNet(e);
+    setPill('off'); return;
+  }
+  await syncAll(true);
+}
+function tick() {
+  const d = new Date();
+  $('#clkTime').textContent = pad(d.getHours()) + ':' + pad(d.getMinutes());
+  $('#clkDate').textContent = d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+}
+tick(); setInterval(tick, 20000);
+setInterval(() => { if (!document.hidden) syncAll(false); }, 30000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) kick(); });
+window.addEventListener('online', () => kick());
+init();
+</script>
+</body>
+</html>
